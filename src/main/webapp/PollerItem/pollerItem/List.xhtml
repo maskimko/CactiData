@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core">
+
+    <ui:composition template="/template.xhtml">
+        <ui:define name="title">
+            <h:outputText value="#{bundle.ListPollerItemTitle}"></h:outputText>
+        </ui:define>
+        <ui:define name="body">
+            
+            <h:panelGrid columns="2">
+                <h:form id="listSize">
+                    <h:outputLabel value="#{bundle.ListPollerItemSize}"/>
+                    <h:inputText maxlength="6" 
+                                 size="6"   value="#{pollerItemController.pageSize}" />
+                    <h:commandButton value="#{bundle.ListPollerItemSizeSubmit}" type="submit" action="#{pollerItemController.resize()}"/>
+                </h:form>
+            </h:panelGrid>
+            
+            <h:form styleClass="jsfcrud_list_form">
+                <h:panelGroup id="messagePanel" layout="block">
+                    <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
+                </h:panelGroup>
+                <h:outputText escape="false" value="#{bundle.ListPollerItemEmpty}" rendered="#{pollerItemController.items.rowCount == 0}"/>
+                <h:panelGroup rendered="#{pollerItemController.items.rowCount > 0}">
+                    <h:outputText value="#{pollerItemController.pagination.pageFirstItem + 1}..#{pollerItemController.pagination.pageLastItem + 1}/#{pollerItemController.pagination.itemsCount}"/>&nbsp;
+                    <h:commandLink action="#{pollerItemController.previous}" value="#{bundle.Previous} #{pollerItemController.pagination.pageSize}" rendered="#{pollerItemController.pagination.hasPreviousPage}"/>&nbsp;
+                    <h:commandLink action="#{pollerItemController.next}" value="#{bundle.Next} #{pollerItemController.pagination.pageSize}" rendered="#{pollerItemController.pagination.hasNextPage}"/>&nbsp;
+                    <h:dataTable value="#{pollerItemController.items}" var="item" border="0" cellpadding="2" cellspacing="0" rowClasses="jsfcrud_odd_row,jsfcrud_even_row" rules="all" style="border:solid 1px">
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListPollerItemTitle_pollerItemPK_rrdName}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.pollerItemPK.rrdName}"/>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListPollerItemTitle_pollerItemPK_localDataId}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.pollerItemPK.localDataId}"/>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListPollerItemTitle_pollerId}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.pollerId}"/>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListPollerItemTitle_hostId}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.hostId}"/>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListPollerItemTitle_action}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.action}"/>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListPollerItemTitle_present}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.present}"/>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListPollerItemTitle_hostname}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.hostname}"/>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListPollerItemTitle_snmpCommunity}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.snmpCommunity}"/>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListPollerItemTitle_snmpVersion}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.snmpVersion}"/>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListPollerItemTitle_snmpUsername}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.snmpUsername}"/>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListPollerItemTitle_snmpPassword}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.snmpPassword}"/>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListPollerItemTitle_snmpAuthProtocol}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.snmpAuthProtocol}"/>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListPollerItemTitle_snmpPrivPassphrase}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.snmpPrivPassphrase}"/>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListPollerItemTitle_snmpPrivProtocol}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.snmpPrivProtocol}"/>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListPollerItemTitle_snmpContext}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.snmpContext}"/>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListPollerItemTitle_snmpPort}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.snmpPort}"/>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListPollerItemTitle_snmpTimeout}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.snmpTimeout}"/>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListPollerItemTitle_rrdPath}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.rrdPath}"/>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListPollerItemTitle_rrdNum}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.rrdNum}"/>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListPollerItemTitle_rrdStep}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.rrdStep}"/>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListPollerItemTitle_rrdNextStep}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.rrdNextStep}"/>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListPollerItemTitle_arg1}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.arg1}"/>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListPollerItemTitle_arg2}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.arg2}"/>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListPollerItemTitle_arg3}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.arg3}"/>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="&nbsp;"/>
+                            </f:facet>
+                            <h:commandLink action="#{pollerItemController.prepareView}" value="#{bundle.ListPollerItemViewLink}"/>
+                            <h:outputText value=" "/>
+                            <h:commandLink action="#{pollerItemController.prepareEdit}" value="#{bundle.ListPollerItemEditLink}"/>
+                            <h:outputText value=" "/>
+                            <h:commandLink action="#{pollerItemController.destroy}" value="#{bundle.ListPollerItemDestroyLink}"/>
+                        </h:column>
+                    </h:dataTable>
+                </h:panelGroup>
+                <br />
+                <h:commandLink action="#{pollerItemController.prepareCreate}" value="#{bundle.ListPollerItemCreateLink}"/>
+                <br />
+                <br />
+                <h:link outcome="/index" value="#{bundle.ListPollerItemIndexLink}"/>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+
+</html>

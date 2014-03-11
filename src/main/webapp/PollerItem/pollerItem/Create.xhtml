@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core">
+
+    <ui:composition template="/template.xhtml">
+        <ui:define name="title">
+            <h:outputText value="#{bundle.CreatePollerItemTitle}"></h:outputText>
+        </ui:define>
+        <ui:define name="body">
+            <h:panelGroup id="messagePanel" layout="block">
+                <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
+            </h:panelGroup>
+            <h:form>
+                <h:panelGrid columns="2">
+                    <h:outputLabel value="#{bundle.CreatePollerItemLabel_pollerItemPK_localDataId}" for="pollerItemPK_localDataId" />
+                    <h:inputText id="pollerItemPK_localDataId" value="#{pollerItemController.selected.pollerItemPK.localDataId}" title="#{bundle.CreatePollerItemTitle_pollerItemPK_localDataId}" required="true" requiredMessage="#{bundle.CreatePollerItemRequiredMessage_pollerItemPK_localDataId}"/>
+                    <h:outputLabel value="#{bundle.CreatePollerItemLabel_pollerItemPK_rrdName}" for="pollerItemPK_rrdName" />
+                    <h:inputText id="pollerItemPK_rrdName" value="#{pollerItemController.selected.pollerItemPK.rrdName}" title="#{bundle.CreatePollerItemTitle_pollerItemPK_rrdName}" required="true" requiredMessage="#{bundle.CreatePollerItemRequiredMessage_pollerItemPK_rrdName}"/>
+                    <h:outputLabel value="#{bundle.CreatePollerItemLabel_pollerId}" for="pollerId" />
+                    <h:inputText id="pollerId" value="#{pollerItemController.selected.pollerId}" title="#{bundle.CreatePollerItemTitle_pollerId}" required="true" requiredMessage="#{bundle.CreatePollerItemRequiredMessage_pollerId}"/>
+                    <h:outputLabel value="#{bundle.CreatePollerItemLabel_hostId}" for="hostId" />
+                    <h:inputText id="hostId" value="#{pollerItemController.selected.hostId}" title="#{bundle.CreatePollerItemTitle_hostId}" required="true" requiredMessage="#{bundle.CreatePollerItemRequiredMessage_hostId}"/>
+                    <h:outputLabel value="#{bundle.CreatePollerItemLabel_action}" for="action" />
+                    <h:inputText id="action" value="#{pollerItemController.selected.action}" title="#{bundle.CreatePollerItemTitle_action}" required="true" requiredMessage="#{bundle.CreatePollerItemRequiredMessage_action}"/>
+                    <h:outputLabel value="#{bundle.CreatePollerItemLabel_present}" for="present" />
+                    <h:inputText id="present" value="#{pollerItemController.selected.present}" title="#{bundle.CreatePollerItemTitle_present}" required="true" requiredMessage="#{bundle.CreatePollerItemRequiredMessage_present}"/>
+                    <h:outputLabel value="#{bundle.CreatePollerItemLabel_hostname}" for="hostname" />
+                    <h:inputText id="hostname" value="#{pollerItemController.selected.hostname}" title="#{bundle.CreatePollerItemTitle_hostname}" required="true" requiredMessage="#{bundle.CreatePollerItemRequiredMessage_hostname}"/>
+                    <h:outputLabel value="#{bundle.CreatePollerItemLabel_snmpCommunity}" for="snmpCommunity" />
+                    <h:inputText id="snmpCommunity" value="#{pollerItemController.selected.snmpCommunity}" title="#{bundle.CreatePollerItemTitle_snmpCommunity}" required="true" requiredMessage="#{bundle.CreatePollerItemRequiredMessage_snmpCommunity}"/>
+                    <h:outputLabel value="#{bundle.CreatePollerItemLabel_snmpVersion}" for="snmpVersion" />
+                    <h:inputText id="snmpVersion" value="#{pollerItemController.selected.snmpVersion}" title="#{bundle.CreatePollerItemTitle_snmpVersion}" required="true" requiredMessage="#{bundle.CreatePollerItemRequiredMessage_snmpVersion}"/>
+                    <h:outputLabel value="#{bundle.CreatePollerItemLabel_snmpUsername}" for="snmpUsername" />
+                    <h:inputText id="snmpUsername" value="#{pollerItemController.selected.snmpUsername}" title="#{bundle.CreatePollerItemTitle_snmpUsername}" required="true" requiredMessage="#{bundle.CreatePollerItemRequiredMessage_snmpUsername}"/>
+                    <h:outputLabel value="#{bundle.CreatePollerItemLabel_snmpPassword}" for="snmpPassword" />
+                    <h:inputText id="snmpPassword" value="#{pollerItemController.selected.snmpPassword}" title="#{bundle.CreatePollerItemTitle_snmpPassword}" required="true" requiredMessage="#{bundle.CreatePollerItemRequiredMessage_snmpPassword}"/>
+                    <h:outputLabel value="#{bundle.CreatePollerItemLabel_snmpAuthProtocol}" for="snmpAuthProtocol" />
+                    <h:inputText id="snmpAuthProtocol" value="#{pollerItemController.selected.snmpAuthProtocol}" title="#{bundle.CreatePollerItemTitle_snmpAuthProtocol}" required="true" requiredMessage="#{bundle.CreatePollerItemRequiredMessage_snmpAuthProtocol}"/>
+                    <h:outputLabel value="#{bundle.CreatePollerItemLabel_snmpPrivPassphrase}" for="snmpPrivPassphrase" />
+                    <h:inputText id="snmpPrivPassphrase" value="#{pollerItemController.selected.snmpPrivPassphrase}" title="#{bundle.CreatePollerItemTitle_snmpPrivPassphrase}" required="true" requiredMessage="#{bundle.CreatePollerItemRequiredMessage_snmpPrivPassphrase}"/>
+                    <h:outputLabel value="#{bundle.CreatePollerItemLabel_snmpPrivProtocol}" for="snmpPrivProtocol" />
+                    <h:inputText id="snmpPrivProtocol" value="#{pollerItemController.selected.snmpPrivProtocol}" title="#{bundle.CreatePollerItemTitle_snmpPrivProtocol}" required="true" requiredMessage="#{bundle.CreatePollerItemRequiredMessage_snmpPrivProtocol}"/>
+                    <h:outputLabel value="#{bundle.CreatePollerItemLabel_snmpContext}" for="snmpContext" />
+                    <h:inputText id="snmpContext" value="#{pollerItemController.selected.snmpContext}" title="#{bundle.CreatePollerItemTitle_snmpContext}" />
+                    <h:outputLabel value="#{bundle.CreatePollerItemLabel_snmpPort}" for="snmpPort" />
+                    <h:inputText id="snmpPort" value="#{pollerItemController.selected.snmpPort}" title="#{bundle.CreatePollerItemTitle_snmpPort}" required="true" requiredMessage="#{bundle.CreatePollerItemRequiredMessage_snmpPort}"/>
+                    <h:outputLabel value="#{bundle.CreatePollerItemLabel_snmpTimeout}" for="snmpTimeout" />
+                    <h:inputText id="snmpTimeout" value="#{pollerItemController.selected.snmpTimeout}" title="#{bundle.CreatePollerItemTitle_snmpTimeout}" required="true" requiredMessage="#{bundle.CreatePollerItemRequiredMessage_snmpTimeout}"/>
+                    <h:outputLabel value="#{bundle.CreatePollerItemLabel_rrdPath}" for="rrdPath" />
+                    <h:inputText id="rrdPath" value="#{pollerItemController.selected.rrdPath}" title="#{bundle.CreatePollerItemTitle_rrdPath}" required="true" requiredMessage="#{bundle.CreatePollerItemRequiredMessage_rrdPath}"/>
+                    <h:outputLabel value="#{bundle.CreatePollerItemLabel_rrdNum}" for="rrdNum" />
+                    <h:inputText id="rrdNum" value="#{pollerItemController.selected.rrdNum}" title="#{bundle.CreatePollerItemTitle_rrdNum}" required="true" requiredMessage="#{bundle.CreatePollerItemRequiredMessage_rrdNum}"/>
+                    <h:outputLabel value="#{bundle.CreatePollerItemLabel_rrdStep}" for="rrdStep" />
+                    <h:inputText id="rrdStep" value="#{pollerItemController.selected.rrdStep}" title="#{bundle.CreatePollerItemTitle_rrdStep}" required="true" requiredMessage="#{bundle.CreatePollerItemRequiredMessage_rrdStep}"/>
+                    <h:outputLabel value="#{bundle.CreatePollerItemLabel_rrdNextStep}" for="rrdNextStep" />
+                    <h:inputText id="rrdNextStep" value="#{pollerItemController.selected.rrdNextStep}" title="#{bundle.CreatePollerItemTitle_rrdNextStep}" required="true" requiredMessage="#{bundle.CreatePollerItemRequiredMessage_rrdNextStep}"/>
+                    <h:outputLabel value="#{bundle.CreatePollerItemLabel_arg1}" for="arg1" />
+                    <h:inputTextarea rows="4" cols="30" id="arg1" value="#{pollerItemController.selected.arg1}" title="#{bundle.CreatePollerItemTitle_arg1}" />
+                    <h:outputLabel value="#{bundle.CreatePollerItemLabel_arg2}" for="arg2" />
+                    <h:inputText id="arg2" value="#{pollerItemController.selected.arg2}" title="#{bundle.CreatePollerItemTitle_arg2}" />
+                    <h:outputLabel value="#{bundle.CreatePollerItemLabel_arg3}" for="arg3" />
+                    <h:inputText id="arg3" value="#{pollerItemController.selected.arg3}" title="#{bundle.CreatePollerItemTitle_arg3}" />
+                </h:panelGrid>
+                <br />
+                <h:commandLink action="#{pollerItemController.create}" value="#{bundle.CreatePollerItemSaveLink}" />
+                <br />
+                <br />
+                <h:commandLink action="#{pollerItemController.prepareList}" value="#{bundle.CreatePollerItemShowAllLink}" immediate="true"/>
+                <br />
+                <br />
+                <h:link outcome="/index" value="#{bundle.CreatePollerItemIndexLink}"/>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+
+</html>
