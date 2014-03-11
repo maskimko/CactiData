@@ -14,7 +14,15 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
-    <dependencies>
+<repositories>
+    <repository>
+        <id>oosnmprepo</id>
+        <name>Snmp4j repository</name>
+        <url>https://oosnmp.net/dist/release/</url>
+    </repository>
+</repositories>            
+            
+            <dependencies>
         <dependency>
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-core</artifactId>
