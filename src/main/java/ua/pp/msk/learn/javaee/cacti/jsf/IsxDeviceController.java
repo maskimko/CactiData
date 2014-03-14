@@ -18,8 +18,6 @@ import javax.faces.convert.FacesConverter;
 import javax.faces.model.DataModel;
 import javax.faces.model.ListDataModel;
 import javax.faces.model.SelectItem;
-import javax.inject.Named;
-import ua.pp.msk.learn.javaee.cacti.ejb.ISXPollerItemFacade;
 import ua.pp.msk.learn.javaee.cacti.jsf.util.ISXDevice;
 import ua.pp.msk.learn.javaee.cacti.jsf.util.JsfUtil;
 import ua.pp.msk.learn.javaee.cacti.jsf.util.PaginationHelper;
@@ -29,7 +27,7 @@ import ua.pp.msk.learn.javaee.cacti.model.PollerItem;
  *
  * @author maskimko
  */
-@Named("isxController")
+@ManagedBean(name="isxDeviceController")
 @SessionScoped
 public class IsxDeviceController implements Serializable {
     
@@ -220,47 +218,31 @@ public class IsxDeviceController implements Serializable {
 
     
     //TODO rewrite converter
-    @FacesConverter(forClass = PollerItem.class)
+    @FacesConverter(forClass = ISXDevice.class)
     public static class PollerItemControllerConverter implements Converter {
 
-        private static final String SEPARATOR = "#";
-        private static final String SEPARATOR_ESCAPED = "\\#";
+      
 
         @Override
         public Object getAsObject(FacesContext facesContext, UIComponent component, String value) {
             if (value == null || value.length() == 0) {
                 return null;
             }
-            ISXPollerItemController controller = (ISXPollerItemController) facesContext.getApplication().getELResolver().
-                    getValue(facesContext.getELContext(), null, "isxPollerItemController");
+            IsxDeviceController controller = (IsxDeviceController) facesContext.getApplication().getELResolver().
+                    getValue(facesContext.getELContext(), null, "isxDeviceController");
             return controller.ejbFacade.find(getKey(value));
         }
 
-        ua.pp.msk.learn.javaee.cacti.model.PollerItemPK getKey(String value) {
-            ua.pp.msk.learn.javaee.cacti.model.PollerItemPK key;
-            String values[] = value.split(SEPARATOR_ESCAPED);
-            key = new ua.pp.msk.learn.javaee.cacti.model.PollerItemPK();
-            key.setLocalDataId(Integer.parseInt(values[0]));
-            key.setRrdName(values[1]);
-            return key;
-        }
-
-        String getStringKey(ua.pp.msk.learn.javaee.cacti.model.PollerItemPK value) {
-            StringBuilder sb = new StringBuilder();
-            sb.append(value.getLocalDataId());
-            sb.append(SEPARATOR);
-            sb.append(value.getRrdName());
-            return sb.toString();
-        }
+       
 
         @Override
         public String getAsString(FacesContext facesContext, UIComponent component, Object object) {
             if (object == null) {
                 return null;
             }
-            if (object instanceof PollerItem) {
-                PollerItem o = (PollerItem) object;
-                return getStringKey(o.getPollerItemPK());
+            if (object instanceof ISXDevice) {
+                ISXDevice o = (ISXDevice) object;
+                return o.getAddr().toString().replace("/", "");
             } else {
                 throw new IllegalArgumentException("object " + object + " is of type " + object.getClass().getName() + "; expected type: " + PollerItem.class.getName());
             }
@@ -270,4 +252,4 @@ public class IsxDeviceController implements Serializable {
 
 }
 
-}
+

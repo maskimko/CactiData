@@ -16,18 +16,19 @@ import java.util.logging.Logger;
 import org.snmp4j.smi.OID;
 import org.snmp4j.smi.VariableBinding;
 import ua.pp.msk.learn.javaee.cacti.jsf.util.ISXDevice;
-import ua.pp.msk.learn.javaee.cacti.jsf.util.Output;
+
 
 /**
  *
  * @author maskimko
  */
-public class ISXDeviceController {
+public class ISXDeviceController extends DeviceController<ISXDevice>{
 
     private List<ISXDevice> isxDevice = new ArrayList<ISXDevice>();
     private SnmpExtract snmpExtract = null;
 
     public ISXDeviceController() {
+        super(ISXDevice.class);
     }
 
     public List<ISXDevice> getIsxDevice() {
@@ -158,7 +159,7 @@ public class ISXDeviceController {
         }
     }
 
-    public void populateIsx(ISXDevice dev, boolean full) {
+    public void populateDevice(ISXDevice dev, boolean full) {
         populateBreakers(dev);
         populateModules(dev);
         if (full) {
@@ -166,19 +167,19 @@ public class ISXDeviceController {
         }
     }
 
-    public void populateIsx(ISXDevice dev) {
-        populateIsx(dev, true);
+    public void populateDevice(ISXDevice dev) {
+        populateDevice(dev, true);
     }
 
-    public void populateIsx(List<ISXDevice> devices, boolean full){
+    public void populateDevice(List<ISXDevice> devices, boolean full){
          Iterator<ISXDevice> iterator = devices.iterator();
         while (iterator.hasNext()) {
-            populateIsx(iterator.next(), full);
+            populateDevice(iterator.next(), full);
         }
     }
     
-    public void populateIsx(List<ISXDevice> devices) {
-        populateIsx(devices, true);
+    public void populateDevice(List<ISXDevice> devices) {
+        populateDevice(devices, true);
     }
 
     public void populateBreakers(List<ISXDevice> devices) {
