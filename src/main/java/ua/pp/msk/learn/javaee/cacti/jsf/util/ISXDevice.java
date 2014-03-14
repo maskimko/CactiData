@@ -47,6 +47,10 @@ public class ISXDevice implements Serializable{
     //PowerNet-MIB::isxModularDistSysVoltageLtoL.phase3
     //.1.3.6.1.4.1.318.1.1.22.4.1.15.1.4.3
     private float voltageLtoL3;
+    
+    private float current1;
+    private float current2;
+    private float current3;
     //PowerNet-MIB::isxModularDistSysOutputFrequency.0
     //.1.3.6.1.4.1.318.1.1.22.4.1.4.0
     private float frequency;
@@ -64,6 +68,9 @@ public class ISXDevice implements Serializable{
       //PowerNet-MIB::isxModularDistSysPowerKw.phase3
     //.1.3.6.1.4.1.318.1.1.22.4.3.5.1.2.3
     private float sysPower3;
+    
+    private float totalPower;
+    
     
     private  Breaker[] breaker = new Breaker[24];
      private   Output[] output = new Output[24];
@@ -90,6 +97,41 @@ public class ISXDevice implements Serializable{
         this.snmpVersion = snmpVersion;
     }
 
+    public float getTotalPower() {
+        return totalPower;
+    }
+
+    public void setTotalPower(float totalPower) {
+        this.totalPower = totalPower;
+    }
+
+    
+    public float getCurrent1() {
+        return current1;
+    }
+
+    public void setCurrent1(float current1) {
+        this.current1 = current1;
+    }
+
+    public float getCurrent2() {
+        return current2;
+    }
+
+    public void setCurrent2(float current2) {
+        this.current2 = current2;
+    }
+
+    public float getCurrent3() {
+        return current3;
+    }
+
+    public void setCurrent3(float current3) {
+        this.current3 = current3;
+    }
+
+    
+    
     public InetAddress getAddr() {
         return addr;
     }
@@ -243,6 +285,9 @@ public class ISXDevice implements Serializable{
             org.apache.log4j.Logger.getLogger(this.getClass().getName()).error("Invalid breaker index " + index + "Must be between 0 and 23");
             return null;
         }
+          if (breaker[index] ==  null) {
+              breaker[index] = new Breaker();
+          }
         return breaker[index];
     }
     public void setBreaker(Breaker[] breaker) {

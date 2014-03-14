@@ -226,7 +226,7 @@ public class ISXPollerItemController implements Serializable {
                 return null;
             }
             ISXPollerItemController controller = (ISXPollerItemController) facesContext.getApplication().getELResolver().
-                    getValue(facesContext.getELContext(), null, "pollerItemController");
+                    getValue(facesContext.getELContext(), null, "isxPollerItemController");
             return controller.ejbFacade.find(getKey(value));
         }
 
