@@ -6,8 +6,12 @@
 
 package ua.pp.msk.learn.javaee.cacti.ejb;
 
+import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.EntityManager;
+import javax.validation.constraints.Size;
+import org.apache.log4j.Logger;
+import ua.pp.msk.power.snmpclient.DeviceManager;
 
 /**
  *
@@ -23,43 +27,45 @@ public abstract class AbstractSnmpFacade<T> {
 
     protected abstract DeviceManager getDeviceManager();
 
-    public void create(T entity) {
-        getEntityManager().persist(entity);
+    public void create(T device) {
+        getDeviceManager().addDevice(device);
     }
 
-    public void edit(T entity) {
-        getEntityManager().merge(entity);
+    public void edit(T device) {
+        getDeviceManager().removeDevice(device);
+        getDeviceManager().addDevice(device);
+        
     }
 
-    public void remove(T entity) {
-        getEntityManager().remove(getEntityManager().merge(entity));
+    public void remove(T device) {
+        getDeviceManager().addDevice(device);
     }
 
-    public T find(Object id) {
-        return getEntityManager().find(snmpDeviceClass, id);
+    @SuppressWarnings("unchecked")
+    public T find(T device) {
+       return (T) getDeviceManager().find(device);
     }
-
+    
+    @SuppressWarnings("unchecked")
     public List<T> findAll() {
-        javax.persistence.criteria.CriteriaQuery cq = getEntityManager().getCriteriaBuilder().createQuery();
-        cq.select(cq.from(snmpDeviceClass));
-        return getEntityManager().createQuery(cq).getResultList();
+       return (List<T>) getDeviceManager().findAll();     
     }
 
-    public List<T> findRange(int[] range) {
-        javax.persistence.criteria.CriteriaQuery cq = getEntityManager().getCriteriaBuilder().createQuery();
-        cq.select(cq.from(snmpDeviceClass));
-        javax.persistence.Query q = getEntityManager().createQuery(cq);
-        q.setMaxResults(range[1] - range[0] + 1);
-        q.setFirstResult(range[0]);
-        return q.getResultList();
+    
+    public List<T> findRange( int[] range) {
+        List<T> findRange = new ArrayList<T>();
+        List<T> findAll = findAll();
+        if (range.length != 2 ) throw new IllegalArgumentException("Range array size must be 2");
+        if (range[0] > range[1]) throw new IllegalArgumentException("First item in range must be less than second");
+        if (range[1] > findAll.size()) throw new IllegalArgumentException("Range must be within device list size");
+        for (int i = range[0]; i < range[1]; i++){
+            findRange.add(findAll.get(i));
+        }
+        return findRange;
     }
 
     public int count() {
-        javax.persistence.criteria.CriteriaQuery cq = getEntityManager().getCriteriaBuilder().createQuery();
-        javax.persistence.criteria.Root<T> rt = cq.from(snmpDeviceClass);
-        cq.select(getEntityManager().getCriteriaBuilder().count(rt));
-        javax.persistence.Query q = getEntityManager().createQuery(cq);
-        return ((Long) q.getSingleResult()).intValue();
+       return getDeviceManager().findAll().size();
     }
     
 }

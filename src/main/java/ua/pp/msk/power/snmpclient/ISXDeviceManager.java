@@ -13,21 +13,22 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Logger;
+import javax.faces.bean.ApplicationScoped;
 import org.snmp4j.smi.OID;
 import org.snmp4j.smi.VariableBinding;
 import ua.pp.msk.learn.javaee.cacti.jsf.util.ISXDevice;
-
 
 /**
  *
  * @author maskimko
  */
-public class ISXDeviceController extends DeviceController<ISXDevice>{
+@ApplicationScoped
+public class ISXDeviceManager extends DeviceManager<ISXDevice> {
 
-    private List<ISXDevice> isxDevice = new ArrayList<ISXDevice>();
+    private static List<ISXDevice> isxDevice = new ArrayList<ISXDevice>();
     private SnmpExtract snmpExtract = null;
 
-    public ISXDeviceController() {
+    public ISXDeviceManager() {
         super(ISXDevice.class);
     }
 
@@ -37,21 +38,6 @@ public class ISXDeviceController extends DeviceController<ISXDevice>{
 
     public void setIsxDevice(List<ISXDevice> isxDevice) {
         this.isxDevice = isxDevice;
-    }
-
-    public ISXDevice find(ISXDevice device) {
-        Iterator<ISXDevice> iterator = isxDevice.iterator();
-        while (iterator.hasNext()) {
-            ISXDevice current = iterator.next();
-            if (current.equals(device)) {
-                return current;
-            }
-        }
-        return null;
-    }
-
-    public ISXDevice find(InetAddress addr, int port) {
-        return find(new ISXDevice(addr, port, null, 0));
     }
 
     private void populateIsxBase(ISXDevice dev) {
@@ -171,13 +157,13 @@ public class ISXDeviceController extends DeviceController<ISXDevice>{
         populateDevice(dev, true);
     }
 
-    public void populateDevice(List<ISXDevice> devices, boolean full){
-         Iterator<ISXDevice> iterator = devices.iterator();
+    public void populateDevice(List<ISXDevice> devices, boolean full) {
+        Iterator<ISXDevice> iterator = devices.iterator();
         while (iterator.hasNext()) {
             populateDevice(iterator.next(), full);
         }
     }
-    
+
     public void populateDevice(List<ISXDevice> devices) {
         populateDevice(devices, true);
     }
@@ -446,5 +432,33 @@ public class ISXDeviceController extends DeviceController<ISXDevice>{
     //PowerNet-MIB::isxModularDistModuleBreakerPower.1.phaseL1 = INTEGER: -1
     //.1.3.6.1.4.1.318.1.1.22.2.4.1.11.1.1
     public static final OID phaseBreakerPower = new OID(".1.3.6.1.4.1.318.1.1.22.2.4.1.11");
+
+    @Override
+    public void addDevice(ISXDevice device) {
+        isxDevice.add(device);
+    }
+
+    @Override
+    public void removeDevice(ISXDevice device) {
+        isxDevice.remove(device);
+    }
+
+    @Override
+    public ISXDevice find(ISXDevice device) {
+
+        Iterator<ISXDevice> iterator = isxDevice.iterator();
+        while (iterator.hasNext()) {
+            ua.pp.msk.learn.javaee.cacti.jsf.util.ISXDevice current = iterator.next();
+            if (current.equals(device)) {
+                return current;
+            }
+        }
+        return null;
+    }
+
+    @Override
+    public List<ISXDevice> findAll() {
+        return isxDevice;
+    }
 
 }

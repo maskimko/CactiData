@@ -6,9 +6,14 @@
 
 package ua.pp.msk.learn.javaee.cacti.ejb;
 
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
+import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -16,17 +21,19 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.Root;
 import ua.pp.msk.learn.javaee.cacti.jsf.util.ISXDevice;
 import ua.pp.msk.learn.javaee.cacti.model.PollerItem;
-import ua.pp.msk.learn.javaee.cacti.model.PollerItem_;
+
+import ua.pp.msk.power.snmpclient.DeviceManager;
+import ua.pp.msk.power.snmpclient.ISXDeviceManager;
 
 /**
  *
  * @author maskimko
  */
 @Stateless
-public class IsxDeviceFacade extends AbstractFacade<ISXDevice>{
+public class IsxDeviceFacade extends AbstractSnmpFacade<ISXDevice>{
 
-  
-
+  @EJB
+private ISXPollerItemFacade pollerItemFacade;
     
     
     private String isxIpPattern;
@@ -38,55 +45,39 @@ public class IsxDeviceFacade extends AbstractFacade<ISXDevice>{
     private void  init(){
         isxIpPattern = ResourceBundle.getBundle("/PollerItem/Bundle").getString("ISXIpPattern");
         if (isxIpPattern == null) isxIpPattern = "10.1.20.%";
-        
+      List<PollerItem> findAll = pollerItemFacade.findAll();
+        for (PollerItem pi : findAll) {
+            upsertDevice(pi);
+        }
     }
 
-    @Override
-    protected EntityManager getEntityManager() {
-        return this.em;
+    
+    private void upsertDevice(PollerItem pi){
+        String hostname = pi.getHostname();
+        int port = pi.getSnmpPort();
+        InetAddress addr;
+      try {
+          addr = InetAddress.getByName(hostname);
+          ISXDevice current = new ISXDevice(addr, port, null, 0);
+          ISXDevice device = (ISXDevice) getDeviceManager().find(current);
+        if (device == null) {
+            current.setSnmpCommunity(pi.getSnmpCommunity());
+            current.setSnmpVersion(pi.getSnmpVersion());
+            getDeviceManager().addDevice(current);
+        }
+      } catch (UnknownHostException ex) {
+          Logger.getLogger(IsxDeviceFacade.class.getName()).log(Level.SEVERE, null, ex);
+      }        
     }
+    
+    @Override
+   public DeviceManager getDeviceManager(){
+       return new ISXDeviceManager();
+   
+   }
     // Add business logic below. (Right-click in editor and choose
     // "Insert Code > Add Business Method")
-    @Override
-     public PollerItem find(Object id) {
-        return getEntityManager().find(PollerItem.class, id);
-    }
-
-    @Override
-    public List<PollerItem> findAll() {
-        CriteriaBuilder cb = getEntityManager().getCriteriaBuilder();
-        javax.persistence.criteria.CriteriaQuery cq = cb.createQuery();
-        Root<PollerItem> root = cq.from(PollerItem.class);
-        cq.where(cb.like(root.get(PollerItem_.hostname), isxIpPattern));
-        cq.select(root);
-        return getEntityManager().createQuery(cq).getResultList();
-    }
-
-    @Override
-    public List<PollerItem> findRange(int[] range) {
-        CriteriaBuilder cb = getEntityManager().getCriteriaBuilder();
-        javax.persistence.criteria.CriteriaQuery cq = cb.createQuery();
-        Root<PollerItem> root = cq.from(PollerItem.class);
-        cq.where(cb.like(root.get(PollerItem_.hostname), isxIpPattern));
-        cq.select(root);
-        javax.persistence.Query q = getEntityManager().createQuery(cq);
-        q.setMaxResults(range[1] - range[0] + 1);
-        q.setFirstResult(range[0]);
-        return q.getResultList();
-    }
-
-    @Override
-    public int count() {
-       CriteriaBuilder cb = getEntityManager().getCriteriaBuilder();
-        javax.persistence.criteria.CriteriaQuery cq = cb.createQuery();
-        Root<PollerItem> root = cq.from(PollerItem.class);
-        cq.where(cb.like(root.get(PollerItem_.hostname), isxIpPattern));
-        cq.select(root);
-        cq.select(getEntityManager().getCriteriaBuilder().count(root));
-        javax.persistence.Query q = getEntityManager().createQuery(cq);
-        return ((Long) q.getSingleResult()).intValue();
-    }
+   
     
 }
 
-}

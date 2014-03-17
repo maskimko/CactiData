@@ -3,7 +3,6 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package ua.pp.msk.learn.javaee.cacti.jsf;
 
 import java.io.Serializable;
@@ -18,6 +17,7 @@ import javax.faces.convert.FacesConverter;
 import javax.faces.model.DataModel;
 import javax.faces.model.ListDataModel;
 import javax.faces.model.SelectItem;
+import ua.pp.msk.learn.javaee.cacti.ejb.IsxDeviceFacade;
 import ua.pp.msk.learn.javaee.cacti.jsf.util.ISXDevice;
 import ua.pp.msk.learn.javaee.cacti.jsf.util.JsfUtil;
 import ua.pp.msk.learn.javaee.cacti.jsf.util.PaginationHelper;
@@ -27,18 +27,15 @@ import ua.pp.msk.learn.javaee.cacti.model.PollerItem;
  *
  * @author maskimko
  */
-@ManagedBean(name="isxDeviceController")
+@ManagedBean(name = "isxDeviceController")
 @SessionScoped
 public class IsxDeviceController implements Serializable {
-    
-
-
 
     private int pageSize = 10;
     private ISXDevice current;
     private DataModel items = null;
     @EJB
-    private ua.pp.msk.learn.javaee.cacti.ejb.ISXPollerItemFacade ejbFacade;
+    private IsxDeviceFacade ejbFacade;
     private PaginationHelper pagination;
     private int selectedItemIndex;
 
@@ -54,17 +51,18 @@ public class IsxDeviceController implements Serializable {
         return current;
     }
 
-    private ISXDeviceFacade getFacade() {
+    private IsxDeviceFacade getFacade() {
         return ejbFacade;
     }
 
-    public int getPageSize(){
+    public int getPageSize() {
         return this.pageSize;
     }
-    public void setPageSize( int pageSize){
+
+    public void setPageSize(int pageSize) {
         this.pageSize = pageSize;
     }
-    
+
     public PaginationHelper getPagination() {
         if (pagination == null) {
             pagination = new PaginationHelper(pageSize) {
@@ -96,7 +94,7 @@ public class IsxDeviceController implements Serializable {
 
     public String prepareCreate() {
         current = new ISXDevice();
-        
+
         selectedItemIndex = -1;
         return "Create";
     }
@@ -195,7 +193,7 @@ public class IsxDeviceController implements Serializable {
         recreateModel();
         return "List";
     }
-    
+
     public String next() {
         getPagination().nextPage();
         recreateModel();
@@ -216,40 +214,5 @@ public class IsxDeviceController implements Serializable {
         return JsfUtil.getSelectItems(ejbFacade.findAll(), true);
     }
 
-    
     //TODO rewrite converter
-    @FacesConverter(forClass = ISXDevice.class)
-    public static class PollerItemControllerConverter implements Converter {
-
-      
-
-        @Override
-        public Object getAsObject(FacesContext facesContext, UIComponent component, String value) {
-            if (value == null || value.length() == 0) {
-                return null;
-            }
-            IsxDeviceController controller = (IsxDeviceController) facesContext.getApplication().getELResolver().
-                    getValue(facesContext.getELContext(), null, "isxDeviceController");
-            return controller.ejbFacade.find(getKey(value));
-        }
-
-       
-
-        @Override
-        public String getAsString(FacesContext facesContext, UIComponent component, Object object) {
-            if (object == null) {
-                return null;
-            }
-            if (object instanceof ISXDevice) {
-                ISXDevice o = (ISXDevice) object;
-                return o.getAddr().toString().replace("/", "");
-            } else {
-                throw new IllegalArgumentException("object " + object + " is of type " + object.getClass().getName() + "; expected type: " + PollerItem.class.getName());
-            }
-        }
-
-    }
-
 }
-
-

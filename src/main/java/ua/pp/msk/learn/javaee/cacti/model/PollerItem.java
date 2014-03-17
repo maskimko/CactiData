@@ -84,7 +84,7 @@ public class PollerItem implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Column(name = "snmp_version")
-    private boolean snmpVersion;
+    private int snmpVersion;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 50)
@@ -156,7 +156,7 @@ public class PollerItem implements Serializable {
         this.pollerItemPK = pollerItemPK;
     }
 
-    public PollerItem(PollerItemPK pollerItemPK, short pollerId, int hostId, short action, short present, String hostname, String snmpCommunity, boolean snmpVersion, String snmpUsername, String snmpPassword, String snmpAuthProtocol, String snmpPrivPassphrase, String snmpPrivProtocol, int snmpPort, int snmpTimeout, String rrdPath, short rrdNum, int rrdStep, int rrdNextStep) {
+    public PollerItem(PollerItemPK pollerItemPK, short pollerId, int hostId, short action, short present, String hostname, String snmpCommunity, int snmpVersion, String snmpUsername, String snmpPassword, String snmpAuthProtocol, String snmpPrivPassphrase, String snmpPrivProtocol, int snmpPort, int snmpTimeout, String rrdPath, short rrdNum, int rrdStep, int rrdNextStep) {
         this.pollerItemPK = pollerItemPK;
         this.pollerId = pollerId;
         this.hostId = hostId;
@@ -238,11 +238,11 @@ public class PollerItem implements Serializable {
         this.snmpCommunity = snmpCommunity;
     }
 
-    public boolean getSnmpVersion() {
+    public int getSnmpVersion() {
         return snmpVersion;
     }
 
-    public void setSnmpVersion(boolean snmpVersion) {
+    public void setSnmpVersion(int snmpVersion) {
         this.snmpVersion = snmpVersion;
     }
 
