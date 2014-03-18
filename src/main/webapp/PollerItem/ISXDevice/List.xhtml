@@ -7,16 +7,16 @@
 
     <ui:composition template="/template.xhtml">
         <ui:define name="title">
-            <h:outputText value="#{bundle.ISXListPollerItemsTitle}"></h:outputText>
+            <h:outputText value="#{bundle.ISXDevicesTitle}"></h:outputText>
         </ui:define>
         <ui:define name="body">
             
             <h:panelGrid columns="2">
                 <h:form id="listSize">
-                    <h:outputLabel value="#{bundle.ListPollerItemSize}"/>
+                    <h:outputLabel value="#{bundle.ListDevicesSize}"/>
                     <h:inputText maxlength="6" 
-                                 size="6"   value="#{isxPollerItemController.pageSize}" />
-                    <h:commandButton value="#{bundle.ListPollerItemSizeSubmit}" type="submit" action="#{isxPollerItemController.resize()}"/>
+                                 size="6"   value="#{isxDeviceController.pageSize}" />
+                    <h:commandButton value="#{bundle.ListDevicesSizeSubmit}" type="submit" action="#{isxPollerItemController.resize()}"/>
                 </h:form>
             </h:panelGrid>
             
@@ -24,127 +24,63 @@
                 <h:panelGroup id="messagePanel" layout="block">
                     <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
                 </h:panelGroup>
-                <h:outputText escape="false" value="#{bundle.ListPollerItemEmpty}" rendered="#{isxPollerItemController.items.rowCount == 0}"/>
-                <h:panelGroup rendered="#{isxPollerItemController.items.rowCount > 0}">
-                    <h:outputText value="#{isxPollerItemController.pagination.pageFirstItem + 1}..#{isxPollerItemController.pagination.pageLastItem + 1}/#{isxPollerItemController.pagination.itemsCount}"/>&nbsp;
-                    <h:commandLink action="#{isxPollerItemController.previous}" value="#{bundle.Previous} #{isxPollerItemController.pagination.pageSize}" rendered="#{isxPollerItemController.pagination.hasPreviousPage}"/>&nbsp;
-                    <h:commandLink action="#{isxPollerItemController.next}" value="#{bundle.Next} #{isxPollerItemController.pagination.pageSize}" rendered="#{isxPollerItemController.pagination.hasNextPage}"/>&nbsp;
-                    <h:dataTable value="#{isxPollerItemController.items}" var="item" border="0" cellpadding="2" cellspacing="0" rowClasses="jsfcrud_odd_row,jsfcrud_even_row" rules="all" style="border:solid 1px">
+                <h:outputText escape="false" value="#{bundle.ListDevicesEmpty}" rendered="#{isxDeviceController.items.rowCount == 0}"/>
+                <h:panelGroup rendered="#{isxDeviceController.items.rowCount > 0}">
+                    <h:outputText value="#{isxDeviceController.pagination.pageFirstItem + 1}..#{isxDeviceController.pagination.pageLastItem + 1}/#{isxDeviceController.pagination.itemsCount}"/>&nbsp;
+                    <h:commandLink action="#{isxDeviceController.previous}" value="#{bundle.Previous} #{isxDeviceController.pagination.pageSize}" rendered="#{isxDeviceController.pagination.hasPreviousPage}"/>&nbsp;
+                    <h:commandLink action="#{isxDeviceController.next}" value="#{bundle.Next} #{isxDeviceController.pagination.pageSize}" rendered="#{isxDeviceController.pagination.hasNextPage}"/>&nbsp;
+                    <h:dataTable value="#{isxDeviceController.items}" var="item" border="0" cellpadding="2" cellspacing="0" rowClasses="jsfcrud_odd_row,jsfcrud_even_row" rules="all" style="border:solid 1px">
                         <h:column>
                             <f:facet name="header">
-                                <h:outputText value="#{bundle.ListPollerItemTitle_pollerItemPK_rrdName}"/>
+                                <h:outputText value="#{bundle.ListDevicesTitle_hostname}"/>
                             </f:facet>
-                            <h:outputText value="#{item.pollerItemPK.rrdName}"/>
+                            <h:outputText value="#{item.addr}"/>
                         </h:column>
                         <h:column>
                             <f:facet name="header">
-                                <h:outputText value="#{bundle.ListPollerItemTitle_pollerItemPK_localDataId}"/>
+                                <h:outputText value="#{bundle.ListDevicesTitle_port}"/>
                             </f:facet>
-                            <h:outputText value="#{item.pollerItemPK.localDataId}"/>
+                            <h:outputText value="#{item.port}"/>
                         </h:column>
                         <h:column>
                             <f:facet name="header">
-                                <h:outputText value="#{bundle.ListPollerItemTitle_pollerId}"/>
-                            </f:facet>
-                            <h:outputText value="#{item.pollerId}"/>
-                        </h:column>
-                        <h:column>
-                            <f:facet name="header">
-                                <h:outputText value="#{bundle.ListPollerItemTitle_hostId}"/>
-                            </f:facet>
-                            <h:outputText value="#{item.hostId}"/>
-                        </h:column>
-                        <h:column>
-                            <f:facet name="header">
-                                <h:outputText value="#{bundle.ListPollerItemTitle_action}"/>
-                            </f:facet>
-                            <h:outputText value="#{item.action}"/>
-                        </h:column>
-                        <h:column>
-                            <f:facet name="header">
-                                <h:outputText value="#{bundle.ListPollerItemTitle_present}"/>
-                            </f:facet>
-                            <h:outputText value="#{item.present}"/>
-                        </h:column>
-                        <h:column>
-                            <f:facet name="header">
-                                <h:outputText value="#{bundle.ListPollerItemTitle_hostname}"/>
-                            </f:facet>
-                            <h:outputText value="#{item.hostname}"/>
-                        </h:column>
-                        <h:column>
-                            <f:facet name="header">
-                                <h:outputText value="#{bundle.ListPollerItemTitle_snmpCommunity}"/>
+                                <h:outputText value="#{bundle.ListDevicesTitle_snmpComunity}"/>
                             </f:facet>
                             <h:outputText value="#{item.snmpCommunity}"/>
                         </h:column>
                         <h:column>
                             <f:facet name="header">
-                                <h:outputText value="#{bundle.ListPollerItemTitle_snmpVersion}"/>
+                                <h:outputText value="#{bundle.ListDevicesTitle_snmpVersion}"/>
                             </f:facet>
                             <h:outputText value="#{item.snmpVersion}"/>
                         </h:column>
-                        
                         <h:column>
                             <f:facet name="header">
-                                <h:outputText value="#{bundle.ListPollerItemTitle_snmpPort}"/>
+                                <h:outputText value="#{bundle.ListDeviceTitle_sysName}"/>
                             </f:facet>
-                            <h:outputText value="#{item.snmpPort}"/>
+                            <h:outputText value="#{item.sysName}"/>
                         </h:column>
                         <h:column>
                             <f:facet name="header">
-                                <h:outputText value="#{bundle.ListPollerItemTitle_snmpTimeout}"/>
+                                <h:outputText value="#{bundle.ListDeviceTitle_location}"/>
                             </f:facet>
-                            <h:outputText value="#{item.snmpTimeout}"/>
+                            <h:outputText value="#{item.location}"/>
                         </h:column>
                         <h:column>
                             <f:facet name="header">
-                                <h:outputText value="#{bundle.ListPollerItemTitle_rrdPath}"/>
+                                <h:outputText value="#{bundle.ListDeviceActionColumn}"/>
                             </f:facet>
-                            <h:outputText value="#{item.rrdPath}"/>
-                        </h:column>
-                        <h:column>
-                            <f:facet name="header">
-                                <h:outputText value="#{bundle.ListPollerItemTitle_rrdNum}"/>
-                            </f:facet>
-                            <h:outputText value="#{item.rrdNum}"/>
-                        </h:column>
-                        <h:column>
-                            <f:facet name="header">
-                                <h:outputText value="#{bundle.ListPollerItemTitle_rrdStep}"/>
-                            </f:facet>
-                            <h:outputText value="#{item.rrdStep}"/>
-                        </h:column>
-                        <h:column>
-                            <f:facet name="header">
-                                <h:outputText value="#{bundle.ListPollerItemTitle_rrdNextStep}"/>
-                            </f:facet>
-                            <h:outputText value="#{item.rrdNextStep}"/>
-                        </h:column>
-                        <h:column>
-                            <f:facet name="header">
-                                <h:outputText value="#{bundle.ListPollerItemTitle_arg1}"/>
-                            </f:facet>
-                            <h:outputText value="#{item.arg1}"/>
+                            <h:button value="#{bundle.ListDeviceActionButtonLabel}" onclick="#{isxDeviceController.populate()}" />
                         </h:column>
                        
-                        <h:column>
-                            <f:facet name="header">
-                                <h:outputText value="&nbsp;"/>
-                            </f:facet>
-                            <h:commandLink action="#{isxPollerItemController.prepareView}" value="#{bundle.ListPollerItemViewLink}"/>
-                            <h:outputText value=" "/>
-                            <h:commandLink action="#{isxPollerItemController.prepareEdit}" value="#{bundle.ListPollerItemEditLink}"/>
-                            <h:outputText value=" "/>
-                            <h:commandLink action="#{isxPollerItemController.destroy}" value="#{bundle.ListPollerItemDestroyLink}"/>
-                        </h:column>
+                        
                     </h:dataTable>
                 </h:panelGroup>
                 <br />
-                <h:commandLink action="#{isxPollerItemController.prepareCreate}" value="#{bundle.ListPollerItemCreateLink}"/>
+                
                 <br />
                 <br />
-                <h:link outcome="/index" value="#{bundle.ListPollerItemIndexLink}"/>
+                <h:link outcome="/index" value="#{bundle.ListDevicesIndexLink}"/>
             </h:form>
         </ui:define>
     </ui:composition>

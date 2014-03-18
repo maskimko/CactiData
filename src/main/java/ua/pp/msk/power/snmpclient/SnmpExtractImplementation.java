@@ -47,6 +47,7 @@ public class SnmpExtractImplementation implements SnmpExtract {
     private TransportMapping<UdpAddress> transportMapping = null;
     private UdpAddress receiveAddress = null;
     private Snmp snmp = null;
+    private boolean initialized = false;
 
     @Override
     public void init() throws IOException {
@@ -65,8 +66,11 @@ public class SnmpExtractImplementation implements SnmpExtract {
         }
         snmp = new Snmp(transportMapping);
         transportMapping.listen();
+        initialized = true;
     }
 
+    
+    
     @Override
     public void setQueryOIDs(OID[] oids) {
 
@@ -77,8 +81,9 @@ public class SnmpExtractImplementation implements SnmpExtract {
 
     @Override
     public VariableBinding[] query(OID oid) {
-
+        java.util.logging.Logger.getLogger(this.getClass().getName()).log(Level.SEVERE,oid.toDottedString());
         VariableBinding[] varBindings = null;
+        try {
         TreeUtils treeUtils = new TreeUtils(snmp, new DefaultPDUFactory());
         List<TreeEvent> treeEvents = treeUtils.getSubtree(target, oid);
         if (treeEvents == null || treeEvents.isEmpty()) {
@@ -109,7 +114,10 @@ public class SnmpExtractImplementation implements SnmpExtract {
                 }
             }
         }
-
+        }
+        catch (Exception e) {
+            java.util.logging.Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, null, e);
+        }
         return varBindings;
 
     }
@@ -287,6 +295,12 @@ public class SnmpExtractImplementation implements SnmpExtract {
     @Override
     public void addQueryOID(OID oid) {
        oids.add(oid);
+    }
+
+    @Override
+    public boolean isInitialized() {
+        if (initialized && snmp != null) return true;
+        else return false;
     }
 
    

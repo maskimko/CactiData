@@ -3,7 +3,6 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package ua.pp.msk.learn.javaee.cacti.ejb;
 
 import java.util.ArrayList;
@@ -34,7 +33,7 @@ public abstract class AbstractSnmpFacade<T> {
     public void edit(T device) {
         getDeviceManager().removeDevice(device);
         getDeviceManager().addDevice(device);
-        
+
     }
 
     public void remove(T device) {
@@ -43,31 +42,42 @@ public abstract class AbstractSnmpFacade<T> {
 
     @SuppressWarnings("unchecked")
     public T find(T device) {
-       return (T) getDeviceManager().find(device);
-    }
-    
-    @SuppressWarnings("unchecked")
-    public List<T> findAll() {
-       return (List<T>) getDeviceManager().findAll();     
+        return (T) getDeviceManager().find(device);
     }
 
-    
-    public List<T> findRange( int[] range) {
+    @SuppressWarnings("unchecked")
+    public List<T> findAll() {
+        return (List<T>) getDeviceManager().findAll();
+    }
+
+    public List<T> findRange(int[] range) {
         List<T> findRange = new ArrayList<T>();
         List<T> findAll = findAll();
-        if (range.length != 2 ) throw new IllegalArgumentException("Range array size must be 2");
-        if (range[0] > range[1]) throw new IllegalArgumentException("First item in range must be less than second");
-        if (range[1] > findAll.size()) throw new IllegalArgumentException("Range must be within device list size");
-        for (int i = range[0]; i < range[1]; i++){
-            findRange.add(findAll.get(i));
+        if (range.length != 2) {
+            throw new IllegalArgumentException("Range array size must be 2");
+        }
+        if (range[0] > range[1]) {
+            throw new IllegalArgumentException("First item in range must be less than second");
+        }
+        if (range[1] > findAll.size()) {
+            for (int i = range[0]; i < findAll.size(); i++) {
+                findRange.add(findAll.get(i));
+            }
+        } else {
+            for (int i = range[0]; i < range[1]; i++) {
+                findRange.add(findAll.get(i));
+            }
         }
         return findRange;
     }
 
     public int count() {
-       return getDeviceManager().findAll().size();
+        return getDeviceManager().findAll().size();
+    }
+
+    public void populate(T device){
+        getDeviceManager().populateDevice(device);
     }
     
+    
 }
-
-

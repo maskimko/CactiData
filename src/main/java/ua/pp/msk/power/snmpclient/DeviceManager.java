@@ -6,6 +6,7 @@
 
 package ua.pp.msk.power.snmpclient;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -16,7 +17,7 @@ import ua.pp.msk.learn.javaee.cacti.jsf.util.ISXDevice;
  * @author maskimko
  * @param <T>
  */
-public abstract class DeviceManager<T> {
+public abstract class DeviceManager<T> implements Serializable{
     
     
     

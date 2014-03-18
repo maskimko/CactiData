@@ -45,5 +45,5 @@ public interface SnmpExtract {
 	    public int getRetries();
             public void setReceiveAddress(InetAddress addr, int port);
             public void close();
-	    
+	    public boolean isInitialized();
 }

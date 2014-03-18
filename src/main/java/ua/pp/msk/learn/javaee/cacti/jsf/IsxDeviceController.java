@@ -10,10 +10,6 @@ import java.util.ResourceBundle;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
-import javax.faces.component.UIComponent;
-import javax.faces.context.FacesContext;
-import javax.faces.convert.Converter;
-import javax.faces.convert.FacesConverter;
 import javax.faces.model.DataModel;
 import javax.faces.model.ListDataModel;
 import javax.faces.model.SelectItem;
@@ -21,7 +17,6 @@ import ua.pp.msk.learn.javaee.cacti.ejb.IsxDeviceFacade;
 import ua.pp.msk.learn.javaee.cacti.jsf.util.ISXDevice;
 import ua.pp.msk.learn.javaee.cacti.jsf.util.JsfUtil;
 import ua.pp.msk.learn.javaee.cacti.jsf.util.PaginationHelper;
-import ua.pp.msk.learn.javaee.cacti.model.PollerItem;
 
 /**
  *
@@ -99,6 +94,21 @@ public class IsxDeviceController implements Serializable {
         return "Create";
     }
 
+    
+    
+    public void populate(){
+        current = (ISXDevice) getItems().getRowData();
+        selectedItemIndex = pagination.getPageFirstItem() + getItems().getRowIndex();
+        try {
+            getFacade().populate(current);
+            JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/PollerItem/Bundle").getString("IsxDevicePopulated"));
+            //return preparePopulate();
+        } catch (Exception e) {
+            JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/PollerItem/Bundle").getString("SnmpErrorOccured"));
+            //return null;
+        }
+    }
+    
     public String create() {
         try {
             getFacade().create(current);

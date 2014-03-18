@@ -5,6 +5,7 @@
  */
 package ua.pp.msk.power.snmpclient;
 
+import java.io.IOException;
 import java.net.InetAddress;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -12,7 +13,9 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
+import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.ejb.Singleton;
 import javax.faces.bean.ApplicationScoped;
 import org.snmp4j.smi.OID;
 import org.snmp4j.smi.VariableBinding;
@@ -22,11 +25,12 @@ import ua.pp.msk.learn.javaee.cacti.jsf.util.ISXDevice;
  *
  * @author maskimko
  */
+@Singleton
 @ApplicationScoped
 public class ISXDeviceManager extends DeviceManager<ISXDevice> {
 
-    private static List<ISXDevice> isxDevice = new ArrayList<ISXDevice>();
-    private SnmpExtract snmpExtract = null;
+    private List<ISXDevice> isxDevice = new ArrayList<ISXDevice>();
+    private transient SnmpExtract snmpExtract = null;
 
     public ISXDeviceManager() {
         super(ISXDevice.class);
@@ -58,7 +62,10 @@ public class ISXDeviceManager extends DeviceManager<ISXDevice> {
         snmpExtract.addQueryOID(sysPowerOid);
         snmpExtract.addQueryOID(voltageNominalLineToLineOid);
         snmpExtract.addQueryOID(voltageNominalLineToNeutralOid);
-
+        
+        try {
+            if (!snmpExtract.isInitialized()) snmpExtract.init();
+        
         VariableBinding[] queryAll = snmpExtract.queryAll();
 
         snmpExtract.close();
@@ -143,11 +150,14 @@ public class ISXDeviceManager extends DeviceManager<ISXDevice> {
                 dev.setSysName(vb.getVariable().toString());
             }
         }
+        } catch (IOException ex) {
+            Logger.getLogger(ISXDeviceManager.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     public void populateDevice(ISXDevice dev, boolean full) {
-        populateBreakers(dev);
-        populateModules(dev);
+        //populateBreakers(dev);
+       // populateModules(dev);
         if (full) {
             populateIsxBase(dev);
         }
@@ -188,7 +198,9 @@ public class ISXDeviceManager extends DeviceManager<ISXDevice> {
         snmpExtract.addQueryOID(phaseBreakerPercent);
         snmpExtract.addQueryOID(phaseBreakerPosition);
         snmpExtract.addQueryOID(phaseBreakerPower);
-
+        try {
+            if (!snmpExtract.isInitialized()) snmpExtract.init();
+       
         VariableBinding[] queryAll = snmpExtract.queryAll();
 
         snmpExtract.close();
@@ -230,6 +242,9 @@ public class ISXDeviceManager extends DeviceManager<ISXDevice> {
             }
 
         }
+         } catch (IOException ex) {
+            Logger.getLogger(ISXDeviceManager.class.getName()).log(Level.SEVERE, null, ex);
+        }
 
     }
 
@@ -260,6 +275,9 @@ public class ISXDeviceManager extends DeviceManager<ISXDevice> {
         snmpExtract.addQueryOID(moduleOutputSerialNumberOid);
         snmpExtract.addQueryOID(moduleOutputManufactureDate);
 
+        try {
+        if (!snmpExtract.isInitialized())  snmpExtract.init();
+        
         VariableBinding[] queryAll = snmpExtract.queryAll();
 
         snmpExtract.close();
@@ -321,6 +339,9 @@ public class ISXDeviceManager extends DeviceManager<ISXDevice> {
             }
         }
 
+        } catch (IOException ex) {
+            Logger.getLogger(ISXDeviceManager.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     //.1.3.6.1.2.1.1.6.0

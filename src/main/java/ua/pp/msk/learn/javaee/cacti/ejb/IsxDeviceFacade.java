@@ -15,6 +15,7 @@ import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
+import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.criteria.CriteriaBuilder;
@@ -34,7 +35,8 @@ public class IsxDeviceFacade extends AbstractSnmpFacade<ISXDevice>{
 
   @EJB
 private ISXPollerItemFacade pollerItemFacade;
-    
+  @Inject
+  private ISXDeviceManager deviceManager;
     
     private String isxIpPattern;
     public IsxDeviceFacade() {
@@ -72,7 +74,7 @@ private ISXPollerItemFacade pollerItemFacade;
     
     @Override
    public DeviceManager getDeviceManager(){
-       return new ISXDeviceManager();
+       return deviceManager;
    
    }
     // Add business logic below. (Right-click in editor and choose
