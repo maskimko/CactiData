@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.net.InetAddress;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Level;
 import org.apache.log4j.Logger;
@@ -127,6 +128,7 @@ public class SnmpExtractImplementation implements SnmpExtract {
         catch (Exception e) {
             java.util.logging.Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, null, e);
         } finally {
+            cleanNullVariableBindings(vbList);
             varBindings = vbList.toArray(new VariableBinding[0]);
         }
         return varBindings;
@@ -139,7 +141,15 @@ public class SnmpExtractImplementation implements SnmpExtract {
 
     }
 
-  
+  private void cleanNullVariableBindings(List<VariableBinding> list) {
+      Iterator<VariableBinding> listIterator = list.iterator();
+      while(listIterator.hasNext()){
+          VariableBinding currentVB = listIterator.next();
+          if (currentVB.getVariable() == null) {
+              list.remove(currentVB);
+          }
+      }
+  }
 
     @Override
     public void setCommuntity(String community) {

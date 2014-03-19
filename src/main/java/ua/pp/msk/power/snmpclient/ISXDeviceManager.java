@@ -58,8 +58,8 @@ public class ISXDeviceManager extends DeviceManager<ISXDevice> {
         snmpExtract.addQueryOID(sysPowerOid);
         snmpExtract.addQueryOID(voltageLtoLOid);
         snmpExtract.addQueryOID(voltageLtoNOid);
-        snmpExtract.addQueryOID(currentAmpsOid);
-        snmpExtract.addQueryOID(sysPowerOid);
+    
+     
         snmpExtract.addQueryOID(voltageNominalLineToLineOid);
         snmpExtract.addQueryOID(voltageNominalLineToNeutralOid);
         VariableBinding[] queryAll = null;

@@ -16,7 +16,7 @@
                     <h:outputLabel value="#{bundle.ListDevicesSize}"/>
                     <h:inputText maxlength="6" 
                                  size="6"   value="#{isxDeviceController.pageSize}" />
-                    <h:commandButton value="#{bundle.ListDevicesSizeSubmit}" type="submit" action="#{isxPollerItemController.resize()}"/>
+                    <h:commandButton value="#{bundle.ListDevicesSizeSubmit}" type="submit" action="#{isxDeviceController.resize()}"/>
                 </h:form>
             </h:panelGrid>
             
@@ -62,9 +62,71 @@
                         </h:column>
                         <h:column>
                             <f:facet name="header">
-                                <h:outputText value="#{bundle.ListDeviceTitle_location}"/>
+                                <h:outputText value="#{bundle.ListDeviceTitle_systemPower}"/>
                             </f:facet>
-                            <h:outputText value="#{item.location}"/>
+                            <h:outputText value="#{item.totalPower}"/>
+                        </h:column>
+                         <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListDeviceTitle_totalPower}"/>
+                            </f:facet>
+                           <table>
+                                <tr><td><h:outputText value="#{item.sysPower1}"/></td>
+                                    <td><h:outputText value="#{item.sysPower2}"/></td>
+                                    <td><h:outputText value="#{item.sysPower3}"/></td>                                     
+                                </tr>                               
+                            </table>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListDeviceTitle_frequency}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.frequency}"/>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListDeviceTitle_current}"/>
+                            </f:facet>
+                            <table>
+                                <tr><td><h:outputText value="#{item.current1}"/></td>
+                                    <td><h:outputText value="#{item.current2}"/></td>
+                                    <td><h:outputText value="#{item.current3}"/></td>                                
+                                </tr>
+                            </table>                            
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListDeviceTitle_voltageL}"/>
+                            </f:facet>
+                            <table>
+                                <tr><td><h:outputText value="#{item.voltageLtoL1}"/></td>
+                                    <td><h:outputText value="#{item.voltageLtoL2}"/></td>
+                                    <td><h:outputText value="#{item.voltageLtoL3}"/></td>                                        
+                                </tr>                               
+                            </table>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListDeviceTitle_voltageN}"/>
+                            </f:facet>
+                           <table>
+                                <tr><td><h:outputText value="#{item.voltageLtoN1}"/></td>
+                                    <td><h:outputText value="#{item.voltageLtoN2}"/></td>
+                                    <td><h:outputText value="#{item.voltageLtoN3}"/></td>                                       
+                                </tr>                              
+                            </table>
+                        </h:column>
+                         <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListDeviceTitle_voltageLNominal}"/>
+                            </f:facet>                          
+                                    <h:outputText value="#{item.voltageNominalLineToLine}"/>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListDeviceTitle_voltageNNominal}"/>
+                            </f:facet>                          
+                                    <h:outputText value="#{item.voltageNominalLineToNeutral}"/>
                         </h:column>
                         <h:column>
                             <f:facet name="header">
