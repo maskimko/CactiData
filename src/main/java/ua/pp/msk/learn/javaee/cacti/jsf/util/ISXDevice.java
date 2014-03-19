@@ -15,7 +15,7 @@ import java.util.logging.Logger;
  *
  * @author maskimko
  */
-public class ISXDevice implements Serializable{
+public class ISXDevice implements Device{
     
    
     

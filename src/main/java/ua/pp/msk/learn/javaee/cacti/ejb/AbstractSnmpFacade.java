@@ -76,7 +76,8 @@ public abstract class AbstractSnmpFacade<T> {
     }
 
     public void populate(T device){
-        getDeviceManager().populateDevice(device);
+        DeviceManager deviceManagerTemporary = getDeviceManager();
+                deviceManagerTemporary.populateDevice((T) device);
     }
     
     

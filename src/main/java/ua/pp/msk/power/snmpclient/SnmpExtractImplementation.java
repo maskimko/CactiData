@@ -83,6 +83,7 @@ public class SnmpExtractImplementation implements SnmpExtract {
     public VariableBinding[] query(OID oid) {
         java.util.logging.Logger.getLogger(this.getClass().getName()).log(Level.SEVERE,oid.toDottedString());
         VariableBinding[] varBindings = null;
+        List<VariableBinding> vbList = new ArrayList<VariableBinding>();
         try {
         TreeUtils treeUtils = new TreeUtils(snmp, new DefaultPDUFactory());
         List<TreeEvent> treeEvents = treeUtils.getSubtree(target, oid);
@@ -95,9 +96,10 @@ public class SnmpExtractImplementation implements SnmpExtract {
                         Logger.getLogger(this.getClass()).error("oid [" + oid + "] " + event.getErrorMessage());
                     }
 
-                    varBindings = event.getVariableBindings();
+                    VariableBinding[] currentVariableBinding = event.getVariableBindings();
+                     
 
-                    if (varBindings == null || varBindings.length == 0) {
+                    if (currentVariableBinding == null || currentVariableBinding.length == 0) {
                         Logger.getLogger(this.getClass()).debug("No result returned from TreeEvent no variableBindings trying to get singular value");
                         try {
                             List<VariableBinding> vbs = new ArrayList<VariableBinding>();
@@ -105,10 +107,17 @@ public class SnmpExtractImplementation implements SnmpExtract {
                             vbs.add(vb);
                             PDU requestPDU = new PDU(PDU.GET, vbs);
                             ResponseEvent get = snmp.get(requestPDU, target);
-                            varBindings = get.getResponse().getVariableBindings().toArray(varBindings);
+                            try {
+                              
+                            vbList.addAll(get.getResponse().getVariableBindings());
+                            } catch (NullPointerException npe ) {
+                                java.util.logging.Logger.getLogger(this.getClass().getName()).log(Level.SEVERE,"We got a timeout on OID " +  oid.toDottedString(), npe);
+                            }
                         } catch (IOException ex) {
                             java.util.logging.Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, null, ex);
                         }
+                    } else {
+                        vbList.addAll(Arrays.asList(currentVariableBinding));
                     }
 
                 }
@@ -117,6 +126,8 @@ public class SnmpExtractImplementation implements SnmpExtract {
         }
         catch (Exception e) {
             java.util.logging.Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, null, e);
+        } finally {
+            varBindings = vbList.toArray(new VariableBinding[0]);
         }
         return varBindings;
 
@@ -237,7 +248,7 @@ public class SnmpExtractImplementation implements SnmpExtract {
         for (OID oid : oids) {
              vbArray.addAll(Arrays.asList(query(oid)));           
         }
-        return vbArray.toArray(result);
+        return vbArray.toArray(new VariableBinding[0]);
     }
 
    
@@ -275,7 +286,7 @@ public class SnmpExtractImplementation implements SnmpExtract {
     }
 
     @Override
-    public Variable queryExact(OID oid) {
+    public  Variable queryExact(OID oid) {
         Variable result = null;
         VariableBinding vb =new VariableBinding(oid);
         List<VariableBinding> vbList = new ArrayList<VariableBinding>();

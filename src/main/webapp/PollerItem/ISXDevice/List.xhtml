@@ -70,9 +70,9 @@
                             <f:facet name="header">
                                 <h:outputText value="#{bundle.ListDeviceActionColumn}"/>
                             </f:facet>
-                            <h:button value="#{bundle.ListDeviceActionButtonLabel}" onclick="#{isxDeviceController.populate()}" />
+                            <h:commandButton value="#{bundle.ListDeviceActionButtonLabel}" actionListener="#{isxDeviceController.handleButtonClick}"  />
                         </h:column>
-                       
+                        
                         
                     </h:dataTable>
                 </h:panelGroup>

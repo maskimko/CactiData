@@ -62,94 +62,99 @@ public class ISXDeviceManager extends DeviceManager<ISXDevice> {
         snmpExtract.addQueryOID(sysPowerOid);
         snmpExtract.addQueryOID(voltageNominalLineToLineOid);
         snmpExtract.addQueryOID(voltageNominalLineToNeutralOid);
-        
+        VariableBinding[] queryAll = null;
         try {
-            if (!snmpExtract.isInitialized()) snmpExtract.init();
-        
-        VariableBinding[] queryAll = snmpExtract.queryAll();
-
-        snmpExtract.close();
-        snmpExtract = null;
-
-        //TODO implement base ISX Device population
-        for (VariableBinding vb : queryAll) {
-
-            OID currentOid = vb.getOid();
-            if (currentOid.startsWith(currentAmpsOid)) {
-                int phase = currentOid.last();
-                switch (phase) {
-                    case 1:
-                        dev.setCurrent1((float) vb.getVariable().toInt() / 10);
-                        break;
-                    case 2:
-                        dev.setCurrent2((float) vb.getVariable().toInt() / 10);
-                        break;
-                    case 3:
-                        dev.setCurrent3((float) vb.getVariable().toInt() / 10);
-                        break;
-                    default:
-                        Logger.getLogger(this.getClass().getName()).warning("We do not support this phase " + phase);
-                }
-
-            } else if (currentOid.startsWith(frequencyOid)) {
-                dev.setFrequency((float) vb.getVariable().toInt() / 10);
-            } else if (currentOid.startsWith(voltageLtoLOid)) {
-                int phase = currentOid.last();
-                switch (phase) {
-                    case 1:
-                        dev.setVoltageLtoL1((float) vb.getVariable().toInt() / 10);
-                        break;
-                    case 2:
-                        dev.setVoltageLtoL2((float) vb.getVariable().toInt() / 10);
-                        break;
-                    case 3:
-                        dev.setVoltageLtoL3((float) vb.getVariable().toInt() / 10);
-                        break;
-                    default:
-                        Logger.getLogger(this.getClass().getName()).warning("We do not support this phase " + phase);
-                }
-            } else if (currentOid.startsWith(voltageLtoNOid)) {
-                int phase = currentOid.last();
-                switch (phase) {
-                    case 1:
-                        dev.setVoltageLtoN1((float) vb.getVariable().toInt() / 10);
-                        break;
-                    case 2:
-                        dev.setVoltageLtoN2((float) vb.getVariable().toInt() / 10);
-                        break;
-                    case 3:
-                        dev.setVoltageLtoN3((float) vb.getVariable().toInt() / 10);
-                        break;
-                    default:
-                        Logger.getLogger(this.getClass().getName()).warning("We do not support this phase " + phase);
-                }
-            } else if (currentOid.startsWith(sysPowerOid)) {
-                int phase = currentOid.last();
-                switch (phase) {
-                    case 1:
-                        dev.setSysPower1((float) vb.getVariable().toInt() / 10);
-                        break;
-                    case 2:
-                        dev.setSysPower2((float) vb.getVariable().toInt() / 10);
-                        break;
-                    case 3:
-                        dev.setSysPower3((float) vb.getVariable().toInt() / 10);
-                        break;
-                    default:
-                        Logger.getLogger(this.getClass().getName()).warning("We do not support this phase " + phase);
-                }
-            } else if (currentOid.startsWith(locationOid)) {
-                dev.setLocation(vb.getVariable().toString());
-            } else if (currentOid.startsWith(sysTotalPowerOid)) {
-                dev.setTotalPower((float) vb.getVariable().toInt() / 10);
-            } else if (currentOid.startsWith(voltageNominalLineToLineOid)) {
-                dev.setVoltageNominalLineToLine((float) vb.getVariable().toInt() / 10);
-            } else if (currentOid.startsWith(voltageNominalLineToNeutralOid)) {
-                dev.setVoltageNominalLineToNeutral((float) vb.getVariable().toInt() / 10);
-            } else if (currentOid.startsWith(sysNameOid)) {
-                dev.setSysName(vb.getVariable().toString());
+            if (!snmpExtract.isInitialized()) {
+                snmpExtract.init();
             }
-        }
+            try {
+                queryAll = snmpExtract.queryAll();
+            } catch (Exception e) {
+                Logger.getLogger(this.getClass().getName()).severe("We got an error " + e);
+            } finally {
+            snmpExtract.close();
+            snmpExtract = null;
+            }
+            //TODO implement base ISX Device population
+            if (queryAll != null)
+            for (VariableBinding vb : queryAll) {
+
+                OID currentOid = vb.getOid();
+                if (currentOid.startsWith(currentAmpsOid)) {
+                    int phase = currentOid.last();
+                    switch (phase) {
+                        case 1:
+                            dev.setCurrent1((float) vb.getVariable().toInt() / 10);
+                            break;
+                        case 2:
+                            dev.setCurrent2((float) vb.getVariable().toInt() / 10);
+                            break;
+                        case 3:
+                            dev.setCurrent3((float) vb.getVariable().toInt() / 10);
+                            break;
+                        default:
+                            Logger.getLogger(this.getClass().getName()).warning("We do not support this phase " + phase);
+                    }
+
+                } else if (currentOid.startsWith(frequencyOid)) {
+                    dev.setFrequency((float) vb.getVariable().toInt() / 10);
+                } else if (currentOid.startsWith(voltageLtoLOid)) {
+                    int phase = currentOid.last();
+                    switch (phase) {
+                        case 1:
+                            dev.setVoltageLtoL1((float) vb.getVariable().toInt() / 10);
+                            break;
+                        case 2:
+                            dev.setVoltageLtoL2((float) vb.getVariable().toInt() / 10);
+                            break;
+                        case 3:
+                            dev.setVoltageLtoL3((float) vb.getVariable().toInt() / 10);
+                            break;
+                        default:
+                            Logger.getLogger(this.getClass().getName()).warning("We do not support this phase " + phase);
+                    }
+                } else if (currentOid.startsWith(voltageLtoNOid)) {
+                    int phase = currentOid.last();
+                    switch (phase) {
+                        case 1:
+                            dev.setVoltageLtoN1((float) vb.getVariable().toInt() / 10);
+                            break;
+                        case 2:
+                            dev.setVoltageLtoN2((float) vb.getVariable().toInt() / 10);
+                            break;
+                        case 3:
+                            dev.setVoltageLtoN3((float) vb.getVariable().toInt() / 10);
+                            break;
+                        default:
+                            Logger.getLogger(this.getClass().getName()).warning("We do not support this phase " + phase);
+                    }
+                } else if (currentOid.startsWith(sysPowerOid)) {
+                    int phase = currentOid.last();
+                    switch (phase) {
+                        case 1:
+                            dev.setSysPower1((float) vb.getVariable().toInt() / 10);
+                            break;
+                        case 2:
+                            dev.setSysPower2((float) vb.getVariable().toInt() / 10);
+                            break;
+                        case 3:
+                            dev.setSysPower3((float) vb.getVariable().toInt() / 10);
+                            break;
+                        default:
+                            Logger.getLogger(this.getClass().getName()).warning("We do not support this phase " + phase);
+                    }
+                } else if (currentOid.startsWith(locationOid)) {
+                    dev.setLocation(vb.getVariable().toString());
+                } else if (currentOid.startsWith(sysTotalPowerOid)) {
+                    dev.setTotalPower((float) vb.getVariable().toInt() / 10);
+                } else if (currentOid.startsWith(voltageNominalLineToLineOid)) {
+                    dev.setVoltageNominalLineToLine((float) vb.getVariable().toInt() / 10);
+                } else if (currentOid.startsWith(voltageNominalLineToNeutralOid)) {
+                    dev.setVoltageNominalLineToNeutral((float) vb.getVariable().toInt() / 10);
+                } else if (currentOid.startsWith(sysNameOid)) {
+                    dev.setSysName(vb.getVariable().toString());
+                }
+            }
         } catch (IOException ex) {
             Logger.getLogger(ISXDeviceManager.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -157,13 +162,14 @@ public class ISXDeviceManager extends DeviceManager<ISXDevice> {
 
     public void populateDevice(ISXDevice dev, boolean full) {
         //populateBreakers(dev);
-       // populateModules(dev);
+        // populateModules(dev);
         if (full) {
             populateIsxBase(dev);
         }
     }
 
-    public void populateDevice(ISXDevice dev) {
+    @Override
+    public void preparePopulateDevice(ISXDevice dev) {
         populateDevice(dev, true);
     }
 
@@ -174,6 +180,7 @@ public class ISXDeviceManager extends DeviceManager<ISXDevice> {
         }
     }
 
+    @Override
     public void populateDevice(List<ISXDevice> devices) {
         populateDevice(devices, true);
     }
@@ -199,50 +206,52 @@ public class ISXDeviceManager extends DeviceManager<ISXDevice> {
         snmpExtract.addQueryOID(phaseBreakerPosition);
         snmpExtract.addQueryOID(phaseBreakerPower);
         try {
-            if (!snmpExtract.isInitialized()) snmpExtract.init();
-       
-        VariableBinding[] queryAll = snmpExtract.queryAll();
+            if (!snmpExtract.isInitialized()) {
+                snmpExtract.init();
+            }
 
-        snmpExtract.close();
-        snmpExtract = null;
+            VariableBinding[] queryAll = snmpExtract.queryAll();
 
-        for (VariableBinding vb : queryAll) {
+            snmpExtract.close();
+            snmpExtract = null;
 
-            OID currentOid = vb.getOid();
-            if (currentOid.startsWith(breakerIndex)) {
-                currentOid.removeLast();
-                int breaker = currentOid.last();
-                dev.getBreaker(breaker).setIndex(vb.getVariable().toInt());
-            } else {
-                if (currentOid.startsWith(phaseBreakerCurrent)) {
-                    int phase = currentOid.removeLast();
-                    int output = currentOid.last();
-                    dev.getBreaker(output).getPhase(phase).setCurrent((float) vb.getVariable().toInt() / 10);
-                } else if (currentOid.startsWith(phaseBreakerIndex)) {
-                    int phase = currentOid.removeLast();
-                    int output = currentOid.last();
+            for (VariableBinding vb : queryAll) {
 
-                    dev.getBreaker(output).getPhase(phase).setIndex((byte) vb.getVariable().toInt());
+                OID currentOid = vb.getOid();
+                if (currentOid.startsWith(breakerIndex)) {
+                    currentOid.removeLast();
+                    int breaker = currentOid.last();
+                    dev.getBreaker(breaker).setIndex(vb.getVariable().toInt());
+                } else {
+                    if (currentOid.startsWith(phaseBreakerCurrent)) {
+                        int phase = currentOid.removeLast();
+                        int output = currentOid.last();
+                        dev.getBreaker(output).getPhase(phase).setCurrent((float) vb.getVariable().toInt() / 10);
+                    } else if (currentOid.startsWith(phaseBreakerIndex)) {
+                        int phase = currentOid.removeLast();
+                        int output = currentOid.last();
 
-                } else if (currentOid.startsWith(phaseBreakerPercent)) {
-                    int phase = currentOid.removeLast();
-                    int output = currentOid.last();
-                    dev.getBreaker(output).getPhase(phase).setCurrent((float) vb.getVariable().toInt() / 10);
-                } else if (currentOid.startsWith(phaseBreakerPosition)) {
-                    int phase = currentOid.removeLast();
-                    int output = currentOid.last();
+                        dev.getBreaker(output).getPhase(phase).setIndex((byte) vb.getVariable().toInt());
 
-                    dev.getBreaker(output).getPhase(phase).setIndex((byte) vb.getVariable().toInt());
-                } else if (currentOid.startsWith(phaseBreakerPower)) {
-                    int phase = currentOid.removeLast();
-                    int output = currentOid.last();
-                    dev.getBreaker(output).getPhase(phase).setCurrent((float) vb.getVariable().toInt() / 10);
+                    } else if (currentOid.startsWith(phaseBreakerPercent)) {
+                        int phase = currentOid.removeLast();
+                        int output = currentOid.last();
+                        dev.getBreaker(output).getPhase(phase).setCurrent((float) vb.getVariable().toInt() / 10);
+                    } else if (currentOid.startsWith(phaseBreakerPosition)) {
+                        int phase = currentOid.removeLast();
+                        int output = currentOid.last();
+
+                        dev.getBreaker(output).getPhase(phase).setIndex((byte) vb.getVariable().toInt());
+                    } else if (currentOid.startsWith(phaseBreakerPower)) {
+                        int phase = currentOid.removeLast();
+                        int output = currentOid.last();
+                        dev.getBreaker(output).getPhase(phase).setCurrent((float) vb.getVariable().toInt() / 10);
+                    }
+
                 }
 
             }
-
-        }
-         } catch (IOException ex) {
+        } catch (IOException ex) {
             Logger.getLogger(ISXDeviceManager.class.getName()).log(Level.SEVERE, null, ex);
         }
 
@@ -276,68 +285,70 @@ public class ISXDeviceManager extends DeviceManager<ISXDevice> {
         snmpExtract.addQueryOID(moduleOutputManufactureDate);
 
         try {
-        if (!snmpExtract.isInitialized())  snmpExtract.init();
-        
-        VariableBinding[] queryAll = snmpExtract.queryAll();
-
-        snmpExtract.close();
-        snmpExtract = null;
-
-        for (VariableBinding vb : queryAll) {
-            try {
-                OID currentOid = vb.getOid();
-                if (currentOid.startsWith(moduleOutputManufactureDate)) {
-                    int output = currentOid.last();
-                    Date manuDate = new SimpleDateFormat("MM/DD/YY").parse(vb.getVariable().toString());
-                    dev.getOutput(output).setManufactureDate(manuDate);
-                } else if (currentOid.startsWith(moduleOutputSerialNumberOid)) {
-                    int output = currentOid.last();
-                    dev.getOutput(output).setSerialNumber(vb.getVariable().toString());
-                } else if (currentOid.startsWith(moduleOutputModelOid)) {
-                    int output = currentOid.last();
-                    dev.getOutput(output).setModel(vb.getVariable().toString());
-                } else if (currentOid.startsWith(moduleOutputIndexOid)) {
-                    int output = currentOid.last();
-                    dev.getOutput(output).setIndex(vb.getVariable().toInt());
-                } else {
-                    if (currentOid.startsWith(phaseModuleOutputConnectorTypeOid)) {
-                        int phase = currentOid.removeLast();
-                        int output = currentOid.last();
-                        dev.getOutput(output).getPhase(phase).setConnectorType(vb.getVariable().toString());
-                    } else if (currentOid.startsWith(phaseModuleOutputKWResetDateOid)) {
-                        int phase = currentOid.removeLast();
-                        int output = currentOid.last();
-                        Date kWhResetDate = new SimpleDateFormat("DD.MM.YYYY").parse(vb.getVariable().toString());
-                        dev.getOutput(output).getPhase(phase).setkWhResetDate(kWhResetDate);
-
-                    } else if (currentOid.startsWith(phaseModuleOutputLocationOid)) {
-                        int phase = currentOid.removeLast();
-                        int output = currentOid.last();
-                        dev.getOutput(output).getPhase(phase).setLocation(vb.getVariable().toString());
-                    } else if (currentOid.startsWith(phaseModuleOutputNameOid)) {
-                        int phase = currentOid.removeLast();
-                        int output = currentOid.last();
-                        dev.getOutput(output).getPhase(phase).setName(vb.getVariable().toString());
-                    } else if (currentOid.startsWith(phaseModuleOutputStatusOid)) {
-                        int phase = currentOid.removeLast();
-                        int output = currentOid.last();
-                        dev.getOutput(output).getPhase(phase).setStatus((byte) vb.getVariable().toInt());
-                    } else if (currentOid.startsWith(phaseModuleOutputTotalPowerOid)) {
-                        int phase = currentOid.removeLast();
-                        int output = currentOid.last();
-                        dev.getOutput(output).getPhase(phase).setTotalPower((float) vb.getVariable().toInt() / 10);
-                    } else if (currentOid.startsWith(phaseModuleOutputkWhUsageOid)) {
-                        int phase = currentOid.removeLast();
-                        int output = currentOid.last();
-                        dev.getOutput(output).getPhase(phase).setkWhUsage((float) vb.getVariable().toInt() / 10);
-                    }
-
-                    //TODO add unimplemented oid;
-                }
-            } catch (ParseException pe) {
-                Logger.getLogger(this.getClass().getName()).warning("Cannot parse manufacture date " + vb.getVariable().toString());
+            if (!snmpExtract.isInitialized()) {
+                snmpExtract.init();
             }
-        }
+
+            VariableBinding[] queryAll = snmpExtract.queryAll();
+
+            snmpExtract.close();
+            snmpExtract = null;
+
+            for (VariableBinding vb : queryAll) {
+                try {
+                    OID currentOid = vb.getOid();
+                    if (currentOid.startsWith(moduleOutputManufactureDate)) {
+                        int output = currentOid.last();
+                        Date manuDate = new SimpleDateFormat("MM/DD/YY").parse(vb.getVariable().toString());
+                        dev.getOutput(output).setManufactureDate(manuDate);
+                    } else if (currentOid.startsWith(moduleOutputSerialNumberOid)) {
+                        int output = currentOid.last();
+                        dev.getOutput(output).setSerialNumber(vb.getVariable().toString());
+                    } else if (currentOid.startsWith(moduleOutputModelOid)) {
+                        int output = currentOid.last();
+                        dev.getOutput(output).setModel(vb.getVariable().toString());
+                    } else if (currentOid.startsWith(moduleOutputIndexOid)) {
+                        int output = currentOid.last();
+                        dev.getOutput(output).setIndex(vb.getVariable().toInt());
+                    } else {
+                        if (currentOid.startsWith(phaseModuleOutputConnectorTypeOid)) {
+                            int phase = currentOid.removeLast();
+                            int output = currentOid.last();
+                            dev.getOutput(output).getPhase(phase).setConnectorType(vb.getVariable().toString());
+                        } else if (currentOid.startsWith(phaseModuleOutputKWResetDateOid)) {
+                            int phase = currentOid.removeLast();
+                            int output = currentOid.last();
+                            Date kWhResetDate = new SimpleDateFormat("DD.MM.YYYY").parse(vb.getVariable().toString());
+                            dev.getOutput(output).getPhase(phase).setkWhResetDate(kWhResetDate);
+
+                        } else if (currentOid.startsWith(phaseModuleOutputLocationOid)) {
+                            int phase = currentOid.removeLast();
+                            int output = currentOid.last();
+                            dev.getOutput(output).getPhase(phase).setLocation(vb.getVariable().toString());
+                        } else if (currentOid.startsWith(phaseModuleOutputNameOid)) {
+                            int phase = currentOid.removeLast();
+                            int output = currentOid.last();
+                            dev.getOutput(output).getPhase(phase).setName(vb.getVariable().toString());
+                        } else if (currentOid.startsWith(phaseModuleOutputStatusOid)) {
+                            int phase = currentOid.removeLast();
+                            int output = currentOid.last();
+                            dev.getOutput(output).getPhase(phase).setStatus((byte) vb.getVariable().toInt());
+                        } else if (currentOid.startsWith(phaseModuleOutputTotalPowerOid)) {
+                            int phase = currentOid.removeLast();
+                            int output = currentOid.last();
+                            dev.getOutput(output).getPhase(phase).setTotalPower((float) vb.getVariable().toInt() / 10);
+                        } else if (currentOid.startsWith(phaseModuleOutputkWhUsageOid)) {
+                            int phase = currentOid.removeLast();
+                            int output = currentOid.last();
+                            dev.getOutput(output).getPhase(phase).setkWhUsage((float) vb.getVariable().toInt() / 10);
+                        }
+
+                        //TODO add unimplemented oid;
+                    }
+                } catch (ParseException pe) {
+                    Logger.getLogger(this.getClass().getName()).warning("Cannot parse manufacture date " + vb.getVariable().toString());
+                }
+            }
 
         } catch (IOException ex) {
             Logger.getLogger(ISXDeviceManager.class.getName()).log(Level.SEVERE, null, ex);

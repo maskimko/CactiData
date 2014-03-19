@@ -6,13 +6,17 @@
 package ua.pp.msk.learn.javaee.cacti.jsf;
 
 import java.io.Serializable;
+import java.util.Map;
 import java.util.ResourceBundle;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
+import javax.faces.context.FacesContext;
+import javax.faces.event.ActionEvent;
 import javax.faces.model.DataModel;
 import javax.faces.model.ListDataModel;
 import javax.faces.model.SelectItem;
+import org.apache.log4j.Logger;
 import ua.pp.msk.learn.javaee.cacti.ejb.IsxDeviceFacade;
 import ua.pp.msk.learn.javaee.cacti.jsf.util.ISXDevice;
 import ua.pp.msk.learn.javaee.cacti.jsf.util.JsfUtil;
@@ -94,19 +98,28 @@ public class IsxDeviceController implements Serializable {
         return "Create";
     }
 
+    public void handleButtonClick(ActionEvent e){
+        
+        FacesContext context = FacesContext.getCurrentInstance();
+        String clientId = e.getComponent().getClientId(context);
+        Map<String, String> requestParams = context.getExternalContext().getRequestParameterMap();
+        Logger.getLogger(this.getClass().getName()).debug("Request Parameters "+requestParams.toString() + "\nClient id " + clientId);
+        populate();
+    }
     
-    
-    public void populate(){
+    public String populate(){
         current = (ISXDevice) getItems().getRowData();
         selectedItemIndex = pagination.getPageFirstItem() + getItems().getRowIndex();
+    
         try {
             getFacade().populate(current);
             JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/PollerItem/Bundle").getString("IsxDevicePopulated"));
-            //return preparePopulate();
+            return "success";
         } catch (Exception e) {
             JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/PollerItem/Bundle").getString("SnmpErrorOccured"));
             //return null;
         }
+        return "failure";
     }
     
     public String create() {
