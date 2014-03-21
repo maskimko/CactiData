@@ -80,7 +80,7 @@ public class ISXDeviceManager extends DeviceManager<ISXDevice> {
             for (VariableBinding vb : queryAll) {
 
                 OID currentOid = vb.getOid();
-                if (currentOid.startsWith(currentAmpsOid)) {
+                if (currentOid.startsWith(currentAmpsOid) && !currentOid.equals(currentAmpsOid)) {
                     int phase = currentOid.last();
                     switch (phase) {
                         case 1:
@@ -98,7 +98,7 @@ public class ISXDeviceManager extends DeviceManager<ISXDevice> {
 
                 } else if (currentOid.startsWith(frequencyOid)) {
                     dev.setFrequency((float) vb.getVariable().toInt() / 10);
-                } else if (currentOid.startsWith(voltageLtoLOid)) {
+                } else if (currentOid.startsWith(voltageLtoLOid) && !currentOid.equals(voltageLtoLOid)) {
                     int phase = currentOid.last();
                     switch (phase) {
                         case 1:
@@ -113,7 +113,7 @@ public class ISXDeviceManager extends DeviceManager<ISXDevice> {
                         default:
                             Logger.getLogger(this.getClass().getName()).warning("We do not support this phase " + phase);
                     }
-                } else if (currentOid.startsWith(voltageLtoNOid)) {
+                } else if (currentOid.startsWith(voltageLtoNOid) && !currentOid.equals(voltageLtoNOid)) {
                     int phase = currentOid.last();
                     switch (phase) {
                         case 1:
@@ -128,7 +128,7 @@ public class ISXDeviceManager extends DeviceManager<ISXDevice> {
                         default:
                             Logger.getLogger(this.getClass().getName()).warning("We do not support this phase " + phase);
                     }
-                } else if (currentOid.startsWith(sysPowerOid)) {
+                } else if (currentOid.startsWith(sysPowerOid) && !currentOid.equals(sysPowerOid)) {
                     int phase = currentOid.last();
                     switch (phase) {
                         case 1:
