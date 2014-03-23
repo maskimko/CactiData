@@ -133,7 +133,7 @@
                         </p:column>
                         <f:facet name="footer">
                             <p:commandButton value="#{bundle.ViewISXDetailsButton}" icon="ui-icon-search"  
-                                             update=":form:display" oncomplete="PF('isxDialog').show()"/>  
+                                             update=":form:detailsAndPies"    oncomplete="PF('isxDialog').show()"/>  
                             <p:commandButton value="#{bundle.ListDeviceQuery}" >
                                 <p:ajax listener="#{isxDeviceController.populate()}" process="@this"/>
                             </p:commandButton>
@@ -144,7 +144,8 @@
                               showEffect="clip" hideEffect="fold">  
                         <p:scrollPanel  mode="native">
                            
-                            
+                            <h:panelGrid id="detailsAndPies" columns="2" cellpadding="10" border="2" >
+                               
                             <h:panelGrid id="display" columns="2" cellpadding="4">  
 
 
@@ -192,16 +193,20 @@
                                 <h:outputText value="#{bundle.ViewISXVoltageN} #{bundle.ViewISXPhase1}"/>
                                 <h:outputText value="#{isxDeviceController.current.voltageLtoN3}" title="#{bundle.ViewISXVoltageN} #{bundle.ViewISXPhase1}"/>
 
-                                <p:pieChart id="powerPie" value="#{isxDeviceController.powerPieModel}" legendPosition="e" fill="true"
-                                            title="Power Pie Change In Bundle" style="width: 300px; height: 200px" showDataLabels="true"/>
-                                <p:pieChart id="currentPie" value="#{isxDeviceController.currentPieModel}" legendPosition="e" fill="true"
-                                            title="Current Pie Change In Bundle" style="width: 300px; height: 200px" showDataLabels="true"/>
-                                <p:pieChart id="voltageLPie" value="#{isxDeviceController.voltageL2LPieModel}" legendPosition="e" fill="true"
-                                            title="Voltage L2L Pie Change In Bundle" style="width: 300px; height: 200px" showDataLabels="true"/>
-                                <p:pieChart id="voltageNPie" value="#{isxDeviceController.voltageL2NPieModel}" legendPosition="e" fill="true"
-                                            title="Voltage L2N Pie Change In Bundle" style="width: 300px; height: 200px" showDataLabels="true"/>
-
+                               
                             </h:panelGrid>  
+                               
+                                <h:panelGrid id="pies" columns="2" cellpadding="4">
+                                     <p:pieChart id="powerPie" value="#{isxDeviceController.powerPieModel}" legendPosition="e" fill="true"
+                                                 title="#{bundle.ViewPiePower}" style="width: 300px; height: 200px" showDataLabels="true"/>
+                                <p:pieChart id="currentPie" value="#{isxDeviceController.currentPieModel}" legendPosition="e" fill="true"
+                                            title="#{bundle.ViewPieCurrent}" style="width: 300px; height: 200px" showDataLabels="true"/>
+                                <p:pieChart id="voltageLPie" value="#{isxDeviceController.voltageL2LPieModel}" legendPosition="e" fill="true"
+                                            title="#{bundle.ViewPieVoltagel2l}" style="width: 300px; height: 200px" showDataLabels="true"/>
+                                <p:pieChart id="voltageNPie" value="#{isxDeviceController.voltageL2NPieModel}" legendPosition="e" fill="true"
+                                            title="#{bundle.ViewPieVoltagel2n}" style="width: 300px; height: 200px" showDataLabels="true"/>
+                                </h:panelGrid>
+                            </h:panelGrid>
                         </p:scrollPanel>
                     </p:dialog>  
 
