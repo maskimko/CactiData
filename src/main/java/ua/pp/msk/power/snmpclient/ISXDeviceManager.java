@@ -184,7 +184,7 @@ public class ISXDeviceManager extends DeviceManager<ISXDevice> {
         }
     }
     
-      @Schedule(minute = "*/5")
+      @Schedule(minute = "*/5", hour = "*")
    private void updateInfo(){
        Logger.getLogger(this.getClass().getName()).info("Starting updating devices information at " + Calendar.getInstance().toString());
        populateDevice(isxDevice);

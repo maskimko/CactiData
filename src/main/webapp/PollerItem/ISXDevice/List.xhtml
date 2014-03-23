@@ -14,9 +14,9 @@
 
 
 
-            <h:form id="form" styleClass="jsfcrud_list_form">
-                <h:outputText escape="false" value="#{bundle.ListDevicesEmpty}" rendered="#{isxDeviceController.count == 0}"/>
-                <h:panelGroup rendered="#{isxDeviceController.count > 0}">
+            <h:form id="form" >
+
+                <h:panelGroup>
 
                     <p:dataTable id="isxDevices" value="#{isxDeviceController.isxDevices}" var="item" rowKey="#{item.addr}" selection="#{isxDeviceController.current}" selectionMode="single" >
                         <f:facet name="header">
@@ -57,7 +57,7 @@
                             <f:facet name="header">
                                 <h:outputText value="#{bundle.ListDeviceTitle_sysName}"/>
                             </f:facet>
-                            
+
                             <h:outputText id="isxSysName" value="#{item.sysName}"/>
                             <p:poll interval="#{isxDeviceController.pollingInterval}" update="isxSysName"/>
                         </p:column>
@@ -113,7 +113,7 @@
                                     <td><h:outputText id="voltagel2l3" value="#{item.voltageLtoL3}"/></td>                                        
                                 </tr>                               
                             </table>
-                             <p:poll interval="#{isxDeviceController.pollingInterval}" update="voltagel2l1"/>
+                            <p:poll interval="#{isxDeviceController.pollingInterval}" update="voltagel2l1"/>
                             <p:poll interval="#{isxDeviceController.pollingInterval}" update="voltagel2l2"/>
                             <p:poll interval="#{isxDeviceController.pollingInterval}" update="voltagel2l3"/>
                         </p:column>
@@ -127,7 +127,7 @@
                                     <td><h:outputText id="voltagel2n3" value="#{item.voltageLtoN3}"/></td>                                       
                                 </tr>                              
                             </table>
-                             <p:poll interval="#{isxDeviceController.pollingInterval}" update="voltagel2n1"/>
+                            <p:poll interval="#{isxDeviceController.pollingInterval}" update="voltagel2n1"/>
                             <p:poll interval="#{isxDeviceController.pollingInterval}" update="voltagel2n2"/>
                             <p:poll interval="#{isxDeviceController.pollingInterval}" update="voltagel2n3"/>
                         </p:column>
@@ -137,32 +137,72 @@
                             <p:commandButton value="#{bundle.ListDeviceQuery}" >
                                 <p:ajax listener="#{isxDeviceController.populate()}" process="@this"/>
                             </p:commandButton>
-                            
+
                         </f:facet>                
                     </p:dataTable>
-                    <p:dialog id="dialog" header="#{bundle.ViewISXDetails}" widgetVar="isxDialog" resizable="false"  
-                              width="400" showEffect="clip" hideEffect="fold">  
+                    <p:dialog id="dialog" header="#{bundle.ViewISXDetails}" widgetVar="isxDialog" resizable="true"  
+                              showEffect="clip" hideEffect="fold">  
+                        <p:scrollPanel  mode="native">
+                           
+                            
+                            <h:panelGrid id="display" columns="2" cellpadding="4">  
 
-                        <h:panelGrid id="display" columns="2" cellpadding="4">  
 
 
+                                <h:outputText value="#{bundle.ViewISXHostname}" />  
+                                <h:outputText value="#{isxDeviceController.current.addr}" />  
+                                <h:outputText value="#{bundle.ViewISXPort}" />  
+                                <h:outputText value="#{isxDeviceController.current.port}" />  
+                                <h:outputText value="#{bundle.ViewISXSnmpComunity}" />  
+                                <h:outputText value="#{isxDeviceController.current.snmpCommunity}" />  
+                                <h:outputText value="#{bundle.ViewISXSnmpVersion}" />  
+                                <h:outputText value="#{isxDeviceController.current.snmpVersion}" /> 
+                                <h:outputText value="#{bundle.ViewISXSysName}"/>
+                                <h:outputText value="#{isxDeviceController.current.sysName}" title="#{bundle.ViewISXSysName}"/>
+                                <h:outputText value="#{bundle.ViewISXTotalPower}"/>
+                                <h:outputText value="#{isxDeviceController.current.totalPower}" title="#{bundle.ViewISXTotalPower}"/>
 
-                            <h:outputText value="#{bundle.ViewISXHostname}" />  
-                            <h:outputText value="#{isxDeviceController.current.addr}" />  
-                            <h:outputText value="#{bundle.ViewISXPort}" />  
-                            <h:outputText value="#{isxDeviceController.current.port}" />  
-                            <h:outputText value="#{bundle.ViewISXSnmpComunity}" />  
-                            <h:outputText value="#{isxDeviceController.current.snmpCommunity}" />  
-                            <h:outputText value="#{bundle.ViewISXSnmpVersion}" />  
-                            <h:outputText value="#{isxDeviceController.current.snmpVersion}" /> 
-                            <h:outputText value="#{bundle.ViewISXSysName}"/>
-                            <h:outputText value="#{isxDeviceController.current.sysName}" title="#{bundle.ViewISXSysName}"/>
-                            <h:outputText value="#{bundle.ViewISXTotalPower}"/>
-                            <h:outputText value="#{isxDeviceController.current.totalPower}" title="#{bundle.ViewISXTotalPower}"/>
-                            <h:outputText value="#{bundle.ViewISXFrequency}"/>
-                            <h:outputText value="#{isxDeviceController.current.frequency}" title="#{bundle.ViewISXFrequency}"/>
+                                <h:outputText value="#{bundle.ViewISXTotalPower} #{bundle.ViewISXPhase1}"/>
+                                <h:outputText value="#{isxDeviceController.current.sysPower1}" title="#{bundle.ViewISXTotalPower} #{bundle.ViewISXPhase1}"/>
+                                <h:outputText value="#{bundle.ViewISXTotalPower} #{bundle.ViewISXPhase1}"/>
+                                <h:outputText value="#{isxDeviceController.current.sysPower2}" title="#{bundle.ViewISXTotalPower} #{bundle.ViewISXPhase1}"/>
+                                <h:outputText value="#{bundle.ViewISXTotalPower} #{bundle.ViewISXPhase1}"/>
+                                <h:outputText value="#{isxDeviceController.current.sysPower3}" title="#{bundle.ViewISXTotalPower} #{bundle.ViewISXPhase1}"/>
+                                <h:outputText value="#{bundle.ViewISXFrequency}"/>
+                                <h:outputText value="#{isxDeviceController.current.frequency}" title="#{bundle.ViewISXFrequency}"/>
 
-                        </h:panelGrid>  
+                                <h:outputText value="#{bundle.ViewISXCurrent} #{bundle.ViewISXPhase1}"/>
+                                <h:outputText value="#{isxDeviceController.current.current1}" title="#{bundle.ViewISXCurrent} #{bundle.ViewISXPhase1}"/>
+                                <h:outputText value="#{bundle.ViewISXCurrent} #{bundle.ViewISXPhase1}"/>
+                                <h:outputText value="#{isxDeviceController.current.current2}" title="#{bundle.ViewISXCurrent} #{bundle.ViewISXPhase1}"/>
+                                <h:outputText value="#{bundle.ViewISXCurrent} #{bundle.ViewISXPhase1}"/>
+                                <h:outputText value="#{isxDeviceController.current.current3}" title="#{bundle.ViewISXCurrent} #{bundle.ViewISXPhase1}"/>
+
+                                <h:outputText value="#{bundle.ViewISXVoltageL} #{bundle.ViewISXPhase1}"/>
+                                <h:outputText value="#{isxDeviceController.current.voltageLtoL1}" title="#{bundle.ViewISXVoltageL} #{bundle.ViewISXPhase1}"/>
+                                <h:outputText value="#{bundle.ViewISXVoltageL} #{bundle.ViewISXPhase1}"/>
+                                <h:outputText value="#{isxDeviceController.current.voltageLtoL2}" title="#{bundle.ViewISXVoltageL} #{bundle.ViewISXPhase1}"/>
+                                <h:outputText value="#{bundle.ViewISXVoltageL} #{bundle.ViewISXPhase1}"/>
+                                <h:outputText value="#{isxDeviceController.current.voltageLtoL3}" title="#{bundle.ViewISXVoltageL} #{bundle.ViewISXPhase1}"/>
+
+                                <h:outputText value="#{bundle.ViewISXVoltageN} #{bundle.ViewISXPhase1}"/>
+                                <h:outputText value="#{isxDeviceController.current.voltageLtoN1}" title="#{bundle.ViewISXVoltageN} #{bundle.ViewISXPhase1}"/>
+                                <h:outputText value="#{bundle.ViewISXVoltageN} #{bundle.ViewISXPhase1}"/>
+                                <h:outputText value="#{isxDeviceController.current.voltageLtoN2}" title="#{bundle.ViewISXVoltageN} #{bundle.ViewISXPhase1}"/>
+                                <h:outputText value="#{bundle.ViewISXVoltageN} #{bundle.ViewISXPhase1}"/>
+                                <h:outputText value="#{isxDeviceController.current.voltageLtoN3}" title="#{bundle.ViewISXVoltageN} #{bundle.ViewISXPhase1}"/>
+
+                                <p:pieChart id="powerPie" value="#{isxDeviceController.powerPieModel}" legendPosition="e" fill="true"
+                                            title="Power Pie Change In Bundle" style="width: 300px; height: 200px" showDataLabels="true"/>
+                                <p:pieChart id="currentPie" value="#{isxDeviceController.currentPieModel}" legendPosition="e" fill="true"
+                                            title="Current Pie Change In Bundle" style="width: 300px; height: 200px" showDataLabels="true"/>
+                                <p:pieChart id="voltageLPie" value="#{isxDeviceController.voltageL2LPieModel}" legendPosition="e" fill="true"
+                                            title="Voltage L2L Pie Change In Bundle" style="width: 300px; height: 200px" showDataLabels="true"/>
+                                <p:pieChart id="voltageNPie" value="#{isxDeviceController.voltageL2NPieModel}" legendPosition="e" fill="true"
+                                            title="Voltage L2N Pie Change In Bundle" style="width: 300px; height: 200px" showDataLabels="true"/>
+
+                            </h:panelGrid>  
+                        </p:scrollPanel>
                     </p:dialog>  
 
 
