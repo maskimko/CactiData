@@ -56,9 +56,9 @@ public class ISXDevice implements Device{
     private float frequency;
     //PowerNet-MIB::isxModularDistSysOutputVoltageNominalLineToNeutral.0
     //.1.3.6.1.4.1.318.1.1.22.4.1.2.0
-    private float voltageNominalLineToNeutral;
+   // private float voltageNominalLineToNeutral;
     //PowerNet-MIB::isxModularDistSysOutputVoltageNominalLineToLine.0
-    private float voltageNominalLineToLine;
+   // private float voltageNominalLineToLine;
     //PowerNet-MIB::isxModularDistSysPowerKw.phase1 
     //.1.3.6.1.4.1.318.1.1.22.4.3.5.1.2.1
     private float sysPower1;
@@ -235,7 +235,7 @@ public class ISXDevice implements Device{
     public void setFrequency(float frequency) {
         this.frequency = frequency;
     }
-
+/*
     public float getVoltageNominalLineToNeutral() {
         return voltageNominalLineToNeutral;
     }
@@ -251,7 +251,7 @@ public class ISXDevice implements Device{
     public void setVoltageNominalLineToLine(float voltageNominalLineToLine) {
         this.voltageNominalLineToLine = voltageNominalLineToLine;
     }
-
+*/
     public float getSysPower1() {
         return sysPower1;
     }

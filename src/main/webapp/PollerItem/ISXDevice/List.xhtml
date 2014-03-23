@@ -3,87 +3,79 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:h="http://java.sun.com/jsf/html"
-      xmlns:f="http://java.sun.com/jsf/core">
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
 
     <ui:composition template="/template.xhtml">
         <ui:define name="title">
             <h:outputText value="#{bundle.ISXDevicesTitle}"></h:outputText>
         </ui:define>
         <ui:define name="body">
-            
-            <h:panelGrid columns="2">
-                <h:form id="listSize">
-                    <h:outputLabel value="#{bundle.ListDevicesSize}"/>
-                    <h:inputText maxlength="6" 
-                                 size="6"   value="#{isxDeviceController.pageSize}" />
-                    <h:commandButton value="#{bundle.ListDevicesSizeSubmit}" type="submit" action="#{isxDeviceController.resize()}"/>
-                </h:form>
-            </h:panelGrid>
-            
-            <h:form styleClass="jsfcrud_list_form">
-                <h:panelGroup id="messagePanel" layout="block">
-                    <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
-                </h:panelGroup>
-                <h:outputText escape="false" value="#{bundle.ListDevicesEmpty}" rendered="#{isxDeviceController.items.rowCount == 0}"/>
-                <h:panelGroup rendered="#{isxDeviceController.items.rowCount > 0}">
-                    <h:outputText value="#{isxDeviceController.pagination.pageFirstItem + 1}..#{isxDeviceController.pagination.pageLastItem + 1}/#{isxDeviceController.pagination.itemsCount}"/>&nbsp;
-                    <h:commandLink action="#{isxDeviceController.previous}" value="#{bundle.Previous} #{isxDeviceController.pagination.pageSize}" rendered="#{isxDeviceController.pagination.hasPreviousPage}"/>&nbsp;
-                    <h:commandLink action="#{isxDeviceController.next}" value="#{bundle.Next} #{isxDeviceController.pagination.pageSize}" rendered="#{isxDeviceController.pagination.hasNextPage}"/>&nbsp;
-                    <h:dataTable value="#{isxDeviceController.items}" var="item" border="0" cellpadding="2" cellspacing="0" rowClasses="jsfcrud_odd_row,jsfcrud_even_row" rules="all" style="border:solid 1px">
-                        <h:column>
+
+
+
+            <h:form id="form" styleClass="jsfcrud_list_form">
+                <h:outputText escape="false" value="#{bundle.ListDevicesEmpty}" rendered="#{isxDeviceController.count == 0}"/>
+                <h:panelGroup rendered="#{isxDeviceController.count > 0}">
+
+                    <p:dataTable id="isxDevices" value="#{isxDeviceController.isxDevices}" var="item" rowKey="#{item.addr}" selection="#{isxDeviceController.current}" selectionMode="single" >
+                        <f:facet name="header">
+                            <h:outputText value="#{bundle.ListISXTableTitle}"/>
+                        </f:facet>
+                        <p:column>
                             <f:facet name="header">
                                 <h:outputText value="#{bundle.ListDevicesTitle_hostname}"/>
                             </f:facet>
                             <h:outputText value="#{item.addr}"/>
-                        </h:column>
-                        <h:column>
+                        </p:column>
+                        <p:column>
                             <f:facet name="header">
                                 <h:outputText value="#{bundle.ListDevicesTitle_port}"/>
                             </f:facet>
                             <h:outputText value="#{item.port}"/>
-                        </h:column>
-                        <h:column>
+                        </p:column>
+                        <p:column>
                             <f:facet name="header">
                                 <h:outputText value="#{bundle.ListDevicesTitle_snmpComunity}"/>
                             </f:facet>
                             <h:outputText value="#{item.snmpCommunity}"/>
-                        </h:column>
-                        <h:column>
+                        </p:column>
+                        <p:column>
                             <f:facet name="header">
                                 <h:outputText value="#{bundle.ListDevicesTitle_snmpVersion}"/>
                             </f:facet>
                             <h:outputText value="#{item.snmpVersion}"/>
-                        </h:column>
-                        <h:column>
+                        </p:column>
+                        <p:column>
                             <f:facet name="header">
                                 <h:outputText value="#{bundle.ListDeviceTitle_sysName}"/>
                             </f:facet>
                             <h:outputText value="#{item.sysName}"/>
-                        </h:column>
-                        <h:column>
+                        </p:column>
+                        <p:column>
                             <f:facet name="header">
                                 <h:outputText value="#{bundle.ListDeviceTitle_systemPower}"/>
                             </f:facet>
                             <h:outputText value="#{item.totalPower}"/>
-                        </h:column>
-                         <h:column>
+                        </p:column>
+                        <p:column>
                             <f:facet name="header">
                                 <h:outputText value="#{bundle.ListDeviceTitle_totalPower}"/>
                             </f:facet>
-                           <table>
+                            <table>
                                 <tr><td><h:outputText value="#{item.sysPower1}"/></td>
                                     <td><h:outputText value="#{item.sysPower2}"/></td>
                                     <td><h:outputText value="#{item.sysPower3}"/></td>                                     
                                 </tr>                               
                             </table>
-                        </h:column>
-                        <h:column>
+                        </p:column>
+                        <p:column>
                             <f:facet name="header">
                                 <h:outputText value="#{bundle.ListDeviceTitle_frequency}"/>
                             </f:facet>
                             <h:outputText value="#{item.frequency}"/>
-                        </h:column>
-                        <h:column>
+                        </p:column>
+                        <p:column>
                             <f:facet name="header">
                                 <h:outputText value="#{bundle.ListDeviceTitle_current}"/>
                             </f:facet>
@@ -93,8 +85,8 @@
                                     <td><h:outputText value="#{item.current3}"/></td>                                
                                 </tr>
                             </table>                            
-                        </h:column>
-                        <h:column>
+                        </p:column>
+                        <p:column>
                             <f:facet name="header">
                                 <h:outputText value="#{bundle.ListDeviceTitle_voltageL}"/>
                             </f:facet>
@@ -104,42 +96,48 @@
                                     <td><h:outputText value="#{item.voltageLtoL3}"/></td>                                        
                                 </tr>                               
                             </table>
-                        </h:column>
-                        <h:column>
+                        </p:column>
+                        <p:column>
                             <f:facet name="header">
                                 <h:outputText value="#{bundle.ListDeviceTitle_voltageN}"/>
                             </f:facet>
-                           <table>
+                            <table>
                                 <tr><td><h:outputText value="#{item.voltageLtoN1}"/></td>
                                     <td><h:outputText value="#{item.voltageLtoN2}"/></td>
                                     <td><h:outputText value="#{item.voltageLtoN3}"/></td>                                       
                                 </tr>                              
                             </table>
-                        </h:column>
-                         <h:column>
-                            <f:facet name="header">
-                                <h:outputText value="#{bundle.ListDeviceTitle_voltageLNominal}"/>
-                            </f:facet>                          
-                                    <h:outputText value="#{item.voltageNominalLineToLine}"/>
-                        </h:column>
-                        <h:column>
-                            <f:facet name="header">
-                                <h:outputText value="#{bundle.ListDeviceTitle_voltageNNominal}"/>
-                            </f:facet>                          
-                                    <h:outputText value="#{item.voltageNominalLineToNeutral}"/>
-                        </h:column>
-                        <h:column>
-                            <f:facet name="header">
-                                <h:outputText value="#{bundle.ListDeviceActionColumn}"/>
-                            </f:facet>
-                            <h:commandButton value="#{bundle.ListDeviceActionButtonLabel}" actionListener="#{isxDeviceController.handleButtonClick}"  />
-                        </h:column>
-                        
-                        
-                    </h:dataTable>
+                        </p:column>
+                        <f:facet name="footer">
+                            <p:commandButton value="#{bundle.ViewISXDetailsButton}" icon="ui-icon-search"  
+                                             update=":form:display" oncomplete="PF('isxDialog').show()"/>  
+                        </f:facet>                
+                    </p:dataTable>
+                    <p:dialog id="dialog" header="#{bundle.ViewISXDetails}" widgetVar="isxDialog" resizable="false"  
+                              width="400" showEffect="clip" hideEffect="fold">  
+
+                        <h:panelGrid id="display" columns="2" cellpadding="4">  
+
+
+
+                            <h:outputText value="#{bundle.ViewISXHostname}" />  
+                            <h:outputText value="#{isxDeviceController.current.addr}" />  
+                            <h:outputText value="#{bundle.ViewISXPort}" />  
+                            <h:outputText value="#{isxDeviceController.current.port}" />  
+                            <h:outputText value="#{bundle.ViewISXSnmpComunity}" />  
+                            <h:outputText value="#{isxDeviceController.current.snmpCommunity}" />  
+                            <h:outputText value="#{bundle.ViewISXSnmpVersion}" />  
+                            <h:outputText value="#{isxDeviceController.current.snmpVersion}" /> 
+                            <h:outputText value="#{bundle.ViewISXSysName}"/>
+                            <h:outputText value="#{isxDeviceController.current.sysName}" title="#{bundle.ViewISXSysName}"/>
+
+                        </h:panelGrid>  
+                    </p:dialog>  
+
+
                 </h:panelGroup>
                 <br />
-                
+
                 <br />
                 <br />
                 <h:link outcome="/index" value="#{bundle.ListDevicesIndexLink}"/>
