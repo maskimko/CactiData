@@ -43,8 +43,8 @@ public class SnmpExtractImplementation implements SnmpExtract {
     private int port = 161;
     private InetAddress hostname = null;
     private CommunityTarget target = null;
-    private int retries = 2;
-    private long timeout = 500;
+    private int retries = 3;
+    private long timeout = 5000;
     private TransportMapping<UdpAddress> transportMapping = null;
     private UdpAddress receiveAddress = null;
     private Snmp snmp = null;

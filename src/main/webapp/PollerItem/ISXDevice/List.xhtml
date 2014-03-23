@@ -111,6 +111,7 @@
                         <f:facet name="footer">
                             <p:commandButton value="#{bundle.ViewISXDetailsButton}" icon="ui-icon-search"  
                                              update=":form:display" oncomplete="PF('isxDialog').show()"/>  
+                            <p:commandButton value="#{bundle.ListDeviceQuery}" onclick="#{isxDeviceController.populate()}"/>
                         </f:facet>                
                     </p:dataTable>
                     <p:dialog id="dialog" header="#{bundle.ViewISXDetails}" widgetVar="isxDialog" resizable="false"  
@@ -130,6 +131,10 @@
                             <h:outputText value="#{isxDeviceController.current.snmpVersion}" /> 
                             <h:outputText value="#{bundle.ViewISXSysName}"/>
                             <h:outputText value="#{isxDeviceController.current.sysName}" title="#{bundle.ViewISXSysName}"/>
+                            <h:outputText value="#{bundle.ViewISXTotalPower}"/>
+                            <h:outputText value="#{isxDeviceController.current.totalPower}" title="#{bundle.ViewISXTotalPower}"/>
+                            <h:outputText value="#{bundle.ViewISXFrequency}"/>
+                            <h:outputText value="#{isxDeviceController.current.frequency}" title="#{bundle.ViewISXFrequency}"/>
 
                         </h:panelGrid>  
                     </p:dialog>  
