@@ -7,14 +7,13 @@
 package ua.pp.msk.power.snmpclient;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
+import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
+import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
-import ua.pp.msk.learn.javaee.cacti.jsf.util.Device;
-import ua.pp.msk.learn.javaee.cacti.jsf.util.ISXDevice;
+import java.util.concurrent.TimeUnit;
 
 /**
  *
@@ -25,11 +24,13 @@ public abstract class DeviceManager<T> implements Serializable{
     
     private Executor executor = null;
     
-    private Class<T> deviceClass;
+    private final Class<T> deviceClass;
     
     public DeviceManager(Class<T> deviceClass){
         this.deviceClass = deviceClass;
         executor =  Executors.newSingleThreadExecutor();
+        //BlockingQueue<Runnable> bq =new LinkedBlockingQueue<Runnable>();
+       // executor = new ThreadPoolExecutor(2, 8, 10, TimeUnit.MINUTES, bq);
     }
     
     public abstract T find(T device);

@@ -10,11 +10,13 @@ import java.net.InetAddress;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.ejb.Schedule;
 import javax.ejb.Singleton;
 import javax.faces.bean.ApplicationScoped;
 import org.snmp4j.smi.OID;
@@ -92,7 +94,7 @@ public class ISXDeviceManager extends DeviceManager<ISXDevice> {
                                 dev.setCurrent3((float) vb.getVariable().toInt() / 10);
                                 break;
                             default:
-                                Logger.getLogger(this.getClass().getName()).warning("We do not support this phase " + phase);
+                                Logger.getLogger(this.getClass().getName()).warning("We do not support this Current phase " + phase);
                         }
 
                     } else if (currentOid.startsWith(frequencyOid)) {
@@ -110,7 +112,7 @@ public class ISXDeviceManager extends DeviceManager<ISXDevice> {
                                 dev.setVoltageLtoL3((float) vb.getVariable().toInt() / 10);
                                 break;
                             default:
-                                Logger.getLogger(this.getClass().getName()).warning("We do not support this phase " + phase);
+                                Logger.getLogger(this.getClass().getName()).warning("We do not support this Voltage l2l phase " + phase);
                         }
                     } else if (currentOid.startsWith(voltageLtoNOid) && !currentOid.equals(voltageLtoNOid)) {
                         int phase = currentOid.last();
@@ -125,7 +127,7 @@ public class ISXDeviceManager extends DeviceManager<ISXDevice> {
                                 dev.setVoltageLtoN3((float) vb.getVariable().toInt() / 10);
                                 break;
                             default:
-                                Logger.getLogger(this.getClass().getName()).warning("We do not support this phase " + phase);
+                                Logger.getLogger(this.getClass().getName()).warning("We do not support this Voltage l2n phase " + phase);
                         }
                     } else if (currentOid.startsWith(sysPowerOid) && !currentOid.equals(sysPowerOid)) {
                         int phase = currentOid.last();
@@ -140,7 +142,7 @@ public class ISXDeviceManager extends DeviceManager<ISXDevice> {
                                 dev.setSysPower3((float) vb.getVariable().toInt() / 10);
                                 break;
                             default:
-                                Logger.getLogger(this.getClass().getName()).warning("We do not support this phase " + phase);
+                                Logger.getLogger(this.getClass().getName()).warning("We do not support this power phase " + phase);
                         }
                     } else if (currentOid.startsWith(locationOid)) {
                         dev.setLocation(vb.getVariable().toString());
@@ -181,6 +183,12 @@ public class ISXDeviceManager extends DeviceManager<ISXDevice> {
             populateDevice(iterator.next(), full);
         }
     }
+    
+      @Schedule(minute = "*/5")
+   private void updateInfo(){
+       Logger.getLogger(this.getClass().getName()).info("Starting updating devices information at " + Calendar.getInstance().toString());
+       populateDevice(isxDevice);
+   }
 
     @Override
     public void populateDevice(List<ISXDevice> devices) {

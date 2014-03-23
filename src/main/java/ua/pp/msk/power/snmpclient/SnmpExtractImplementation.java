@@ -12,6 +12,7 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Level;
+import javax.ejb.Schedule;
 import org.apache.log4j.Logger;
 import org.snmp4j.CommunityTarget;
 import org.snmp4j.PDU;
@@ -43,8 +44,8 @@ public class SnmpExtractImplementation implements SnmpExtract {
     private int port = 161;
     private InetAddress hostname = null;
     private CommunityTarget target = null;
-    private int retries = 3;
-    private long timeout = 5000;
+    private int retries = 1;
+    private long timeout = 10000;
     private TransportMapping<UdpAddress> transportMapping = null;
     private UdpAddress receiveAddress = null;
     private Snmp snmp = null;
@@ -82,7 +83,7 @@ public class SnmpExtractImplementation implements SnmpExtract {
 
     @Override
     public VariableBinding[] query(OID oid) {
-        java.util.logging.Logger.getLogger(this.getClass().getName()).log(Level.SEVERE,oid.toDottedString());
+        java.util.logging.Logger.getLogger(this.getClass().getName()).log(Level.INFO,"Quering OID " + oid.toDottedString());
         VariableBinding[] varBindings = null;
         List<VariableBinding> vbList = new ArrayList<VariableBinding>();
         try {
@@ -115,7 +116,7 @@ public class SnmpExtractImplementation implements SnmpExtract {
                                 java.util.logging.Logger.getLogger(this.getClass().getName()).log(Level.SEVERE,"We got a timeout on OID " +  oid.toDottedString(), npe);
                             }
                         } catch (IOException ex) {
-                            java.util.logging.Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, null, ex);
+                            java.util.logging.Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, "We got IOException " + oid.toDottedString(),  ex);
                         }
                     } else {
                         vbList.addAll(Arrays.asList(currentVariableBinding));
@@ -126,7 +127,7 @@ public class SnmpExtractImplementation implements SnmpExtract {
         }
         }
         catch (Exception e) {
-            java.util.logging.Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, null, e);
+            java.util.logging.Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, "We got general exception " + oid.toDottedString(), e);
         } finally {
             cleanNullVariableBindings(vbList);
             varBindings = vbList.toArray(new VariableBinding[0]);
@@ -261,7 +262,7 @@ public class SnmpExtractImplementation implements SnmpExtract {
         return vbArray.toArray(new VariableBinding[0]);
     }
 
-   
+  
 
     @Override
     public InetAddress getHostname() {

@@ -21,6 +21,13 @@
                     <p:dataTable id="isxDevices" value="#{isxDeviceController.isxDevices}" var="item" rowKey="#{item.addr}" selection="#{isxDeviceController.current}" selectionMode="single" >
                         <f:facet name="header">
                             <h:outputText value="#{bundle.ListISXTableTitle}"/>
+                            <br />
+                            <h:outputLabel for="" value="#{bundle.ListISXTableUpdateInterval}"/>
+                            <p:outputPanel>
+                                <p:spinner id="updateAjaxSpinner" value="#{isxDeviceController.pollingInterval}" min="5" max="300" stepFactor="5">
+                                    <p:ajax process="@this"/>
+                                </p:spinner>
+                            </p:outputPanel>
                         </f:facet>
                         <p:column>
                             <f:facet name="header">
@@ -50,68 +57,87 @@
                             <f:facet name="header">
                                 <h:outputText value="#{bundle.ListDeviceTitle_sysName}"/>
                             </f:facet>
-                            <h:outputText value="#{item.sysName}"/>
+                            
+                            <h:outputText id="isxSysName" value="#{item.sysName}"/>
+                            <p:poll interval="#{isxDeviceController.pollingInterval}" update="isxSysName"/>
                         </p:column>
                         <p:column>
                             <f:facet name="header">
                                 <h:outputText value="#{bundle.ListDeviceTitle_systemPower}"/>
                             </f:facet>
-                            <h:outputText value="#{item.totalPower}"/>
+                            <h:outputText id="isxTotalPower" value="#{item.totalPower}"/>
+                            <p:poll interval="#{isxDeviceController.pollingInterval}" update="isxTotalPower"/>
                         </p:column>
                         <p:column>
                             <f:facet name="header">
                                 <h:outputText value="#{bundle.ListDeviceTitle_totalPower}"/>
                             </f:facet>
                             <table>
-                                <tr><td><h:outputText value="#{item.sysPower1}"/></td>
-                                    <td><h:outputText value="#{item.sysPower2}"/></td>
-                                    <td><h:outputText value="#{item.sysPower3}"/></td>                                     
+                                <tr><td><h:outputText id="power1" value="#{item.sysPower1}"/></td>
+                                    <td><h:outputText id="power2" value="#{item.sysPower2}"/></td>
+                                    <td><h:outputText id="power3" value="#{item.sysPower3}"/></td>                                     
                                 </tr>                               
                             </table>
+                            <p:poll interval="#{isxDeviceController.pollingInterval}" update="power1"/>
+                            <p:poll interval="#{isxDeviceController.pollingInterval}" update="power2"/>
+                            <p:poll interval="#{isxDeviceController.pollingInterval}" update="power3"/>
                         </p:column>
                         <p:column>
                             <f:facet name="header">
                                 <h:outputText value="#{bundle.ListDeviceTitle_frequency}"/>
                             </f:facet>
-                            <h:outputText value="#{item.frequency}"/>
+                            <h:outputText id="frequency" value="#{item.frequency}"/>
+                            <p:poll interval="#{isxDeviceController.pollingInterval}" update="frequency"/>
                         </p:column>
                         <p:column>
                             <f:facet name="header">
                                 <h:outputText value="#{bundle.ListDeviceTitle_current}"/>
                             </f:facet>
                             <table>
-                                <tr><td><h:outputText value="#{item.current1}"/></td>
-                                    <td><h:outputText value="#{item.current2}"/></td>
-                                    <td><h:outputText value="#{item.current3}"/></td>                                
+                                <tr><td><h:outputText id="current1" value="#{item.current1}"/></td>
+                                    <td><h:outputText id="current2" value="#{item.current2}"/></td>
+                                    <td><h:outputText id="current3" value="#{item.current3}"/></td>                                
                                 </tr>
-                            </table>                            
+                            </table>   
+                            <p:poll interval="#{isxDeviceController.pollingInterval}" update="current1"/>
+                            <p:poll interval="#{isxDeviceController.pollingInterval}" update="current2"/>
+                            <p:poll interval="#{isxDeviceController.pollingInterval}" update="current3"/>
                         </p:column>
                         <p:column>
                             <f:facet name="header">
                                 <h:outputText value="#{bundle.ListDeviceTitle_voltageL}"/>
                             </f:facet>
                             <table>
-                                <tr><td><h:outputText value="#{item.voltageLtoL1}"/></td>
-                                    <td><h:outputText value="#{item.voltageLtoL2}"/></td>
-                                    <td><h:outputText value="#{item.voltageLtoL3}"/></td>                                        
+                                <tr><td><h:outputText id="voltagel2l1"  value="#{item.voltageLtoL1}"/></td>
+                                    <td><h:outputText id="voltagel2l2" value="#{item.voltageLtoL2}"/></td>
+                                    <td><h:outputText id="voltagel2l3" value="#{item.voltageLtoL3}"/></td>                                        
                                 </tr>                               
                             </table>
+                             <p:poll interval="#{isxDeviceController.pollingInterval}" update="voltagel2l1"/>
+                            <p:poll interval="#{isxDeviceController.pollingInterval}" update="voltagel2l2"/>
+                            <p:poll interval="#{isxDeviceController.pollingInterval}" update="voltagel2l3"/>
                         </p:column>
                         <p:column>
                             <f:facet name="header">
                                 <h:outputText value="#{bundle.ListDeviceTitle_voltageN}"/>
                             </f:facet>
                             <table>
-                                <tr><td><h:outputText value="#{item.voltageLtoN1}"/></td>
-                                    <td><h:outputText value="#{item.voltageLtoN2}"/></td>
-                                    <td><h:outputText value="#{item.voltageLtoN3}"/></td>                                       
+                                <tr><td><h:outputText id="voltagel2n1" value="#{item.voltageLtoN1}"/></td>
+                                    <td><h:outputText id="voltagel2n2" value="#{item.voltageLtoN2}"/></td>
+                                    <td><h:outputText id="voltagel2n3" value="#{item.voltageLtoN3}"/></td>                                       
                                 </tr>                              
                             </table>
+                             <p:poll interval="#{isxDeviceController.pollingInterval}" update="voltagel2n1"/>
+                            <p:poll interval="#{isxDeviceController.pollingInterval}" update="voltagel2n2"/>
+                            <p:poll interval="#{isxDeviceController.pollingInterval}" update="voltagel2n3"/>
                         </p:column>
                         <f:facet name="footer">
                             <p:commandButton value="#{bundle.ViewISXDetailsButton}" icon="ui-icon-search"  
                                              update=":form:display" oncomplete="PF('isxDialog').show()"/>  
-                            <p:commandButton value="#{bundle.ListDeviceQuery}" onclick="#{isxDeviceController.populate()}"/>
+                            <p:commandButton value="#{bundle.ListDeviceQuery}" >
+                                <p:ajax listener="#{isxDeviceController.populate()}" process="@this"/>
+                            </p:commandButton>
+                            
                         </f:facet>                
                     </p:dataTable>
                     <p:dialog id="dialog" header="#{bundle.ViewISXDetails}" widgetVar="isxDialog" resizable="false"  

@@ -33,6 +33,7 @@ public class IsxDeviceController implements Serializable {
 
     private ISXDevice current;
 
+    private int pollingInterval = 60;
     @EJB
     private IsxDeviceFacade ejbFacade;
 
@@ -65,13 +66,24 @@ public class IsxDeviceController implements Serializable {
         }
         this.current = current;
     }
-    
-    public void populate(){
+
+
+
+    public void populate() {
         if (current != null) {
             Logger.getLogger(this.getClass().getName()).info("Start population of: " + current.getAddr().toString());
             getFacade().populate(current);
         } else {
             Logger.getLogger(this.getClass().getName()).info("Cannot populate null value ISX Device");
-        } 
+        }
     }
+
+    public int getPollingInterval() {
+        return pollingInterval;
+    }
+
+    public void setPollingInterval(int pollingInterval) {
+        this.pollingInterval = pollingInterval;
+    }
+
 }
