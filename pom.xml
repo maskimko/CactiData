@@ -14,26 +14,26 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
-<repositories>
-    <repository>
-        <id>prime-repo</id>
-        <name>PrimeFaces Maven Repository</name>
-        <url>http://repository.primefaces.org/</url>
-        <layout>default</layout>
-    </repository>
-    <repository>
-        <id>oosnmprepo</id>
-        <name>Snmp4j repository</name>
-        <url>https://oosnmp.net/dist/release/</url>
-    </repository>
-</repositories>            
+    <repositories>
+        <repository>
+            <id>prime-repo</id>
+            <name>PrimeFaces Maven Repository</name>
+            <url>http://repository.primefaces.org/</url>
+            <layout>default</layout>
+        </repository>
+        <repository>
+            <id>oosnmprepo</id>
+            <name>Snmp4j repository</name>
+            <url>https://oosnmp.net/dist/release/</url>
+        </repository>
+    </repositories>            
             
-            <dependencies>
-                <dependency>
-                    <groupId>org.primefaces</groupId>
-                    <artifactId>primefaces</artifactId>
-                    <version>4.0</version>
-                </dependency>
+    <dependencies>
+        <dependency>
+            <groupId>org.primefaces</groupId>
+            <artifactId>primefaces</artifactId>
+            <version>4.0</version>
+        </dependency>
         <dependency>
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-core</artifactId>
@@ -131,6 +131,7 @@
                     </execution>
                 </executions>
             </plugin>
+           
         </plugins>
     </build>
 

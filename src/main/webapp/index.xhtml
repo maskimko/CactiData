@@ -1,20 +1,32 @@
 <?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://java.sun.com/jsf/html">
-    <h:head>
-        <title>Facelet Title</title>
-        <h:outputStylesheet name="css/jsfcrud.css"/>
-    </h:head>
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+    <head>
+        <title>IGNORED</title>
+
+    </head>
     <h:body>
-        Hello from Facelets
-        <p>This is a test application</p>
-        <br />
-        <h:link outcome="/PollerItem/pollerItem/List" value="Show All PollerItem Items"/>
-        <br/>
-        <h:link outcome="/PollerItem/ISXPollerItem/List" value="Show All ISX Poller Items"/>
-        <br/>
-        <h:link outcome="/PollerItem/ISXDevice/List" value="#{bundle.ListDevicesListLink}"/>
+        <ui:composition template="skeleton_template.xhtml">
+            <ui:define name="windowTitle">
+                Window title
+            </ui:define>
+            <ui:define name="content">
+                <div class="content">
+                    Some useful content
+                    <p>This is a test application</p>
+                    <br />
+                    <h:link outcome="/PollerItem/pollerItem/List" value="Show All PollerItem Items"/>
+                    <br/>
+                    <h:link outcome="/PollerItem/ISXPollerItem/List" value="Show All ISX Poller Items"/>
+                    <br/>
+                    <h:link outcome="/PollerItem/ISXDevice/List" value="#{bundle.ListDevicesListLink}"/>
+                </div>
+            </ui:define>
+
+        </ui:composition>
+
     </h:body>
 
 </html>
