@@ -6,16 +6,19 @@ and open the template in the editor.
 -->
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:ui="http://java.sun.com/jsf/facelets">
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html">
     <head>
         <title>IGNORED</title>
-
     </head>
     <body>
         <ui:composition>
-
             <div class="heading">
-                #{bundle.PageHeader}
+                <div width="70px" right="5px">
+                    <img src="images/life_logo.png"  alt="life_logo2" height="40px" width="60px" />
+                </div><div right="80px">
+                    <h:outputText value="#{bundle.PageHeader}" />
+                </div>
             </div>
         </ui:composition>
     </body>

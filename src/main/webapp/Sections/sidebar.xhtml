@@ -7,7 +7,8 @@ and open the template in the editor.
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:ui="http://java.sun.com/jsf/facelets"
-      xmlns:h="http://java.sun.com/jsf/html">
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
     <head>
         <title>IGNORED</title>
 
@@ -16,8 +17,38 @@ and open the template in the editor.
         <ui:composition>
 
             <div class="sidebar">
-                <h:outputText value="Some test text"/>
+                
+                <h:outputText value="Some text before accordion"/>
+                <p:accordionPanel>
+                    <p:tab title="#{bundle.ListPollerItemTitle}">
+                        <h:link outcome="/PollerItem/pollerItem/List" value="#{bundle.ListPollerItemTitle}"/>
+                    </p:tab>
+                    <p:tab title="#{bundle.ISXListPollerItemsTitle}">
+                        <h:link outcome="/PollerItem/ISXPollerItem/List" value="#{bundle.ISXListPollerItemsTitle}"/>
+                    </p:tab>
+                    
+                    <p:tab title="#{bundle.ISXDevicesTitle}">
+                        <h:panelGrid columns="2">
+                            <h:graphicImage library="images"  name="apc_isx_4.jpg" width="42" height="130" alt="#{bundle.AltTextISXImage}" />
+                            <h:link outcome="/PollerItem/ISXDevice/List" value="#{bundle.ISXDevicesTitle}"/>
+                        </h:panelGrid>
+                    </p:tab>
+                    <p:tab title="#{bundle.PDUDevicesTitle}">
+                        <h:panelGrid columns="2" >
+                            <h:graphicImage library="images"  name="apc_pdu_6.jpg" width="42" height="130" alt="#{bundle.AltTextPDUImage}" />
+                           
+                            <h:outputText value="#{bundle.PDUDevicesTitle}"/> 
+                        </h:panelGrid>
+                    </p:tab>
+                    <p:tab title="#{bundle.UPSDevicesTitle}">
+                        <h:outputText value="#{bundle.UPSDevicesTitle}"/> 
+                    </p:tab>
+                    <p:tab title="#{bundle.RCUDevicesTitle}">
+                        <h:outputText value="#{bundle.RCUDevicesTitle}"/> 
+                    </p:tab>
+                </p:accordionPanel>
             </div>
+            
         </ui:composition>
     </body>
 </html>
