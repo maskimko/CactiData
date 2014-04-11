@@ -8,32 +8,14 @@ and open the template in the editor.
     Author     : maskimko
 */
 
-#heading {
-   padding: 10px;
-   height: 75px;
-   margin-bottom: 10px;
-   background: #dddddd;
-   border: 1px solid darkGray;
-   
+#heading{
+    padding: 0;
+    border: 0;
 }
 
-#sidebar {
-   border: thin solid lightGray;
-   padding: 5px;
-   width: 220px;
-   background: #eeeeee;
-}
 
-#content {
-   padding: 10px;
-   border: thin solid lightGray;
-   background: #fefeef;
-   position: absolute;
-   right: 8px;
-   left: 250px;
-   height: 400px;
-   top: 115px;
-}
+
+
 
 
 
@@ -58,6 +40,14 @@ and open the template in the editor.
 	width:100%;
 	font:normal 100% Helvetica,Arial,sans-serif;
 	font-weight:bold
+}
+
+#heading-title{
+    color: #e33b06;
+    font-size: large;
+    alignment-adjust: middle;
+    alignment-baseline: middle;
+    font-family: fantasy;
 }
 
 #sites-header{

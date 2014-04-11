@@ -13,13 +13,12 @@ and open the template in the editor.
     </head>
     <body>
         <ui:composition>
-            <div class="heading">
-                <div width="70px" right="5px">
-                    <img src="images/life_logo.png"  alt="life_logo2" height="40px" width="60px" />
-                </div><div right="80px">
-                    <h:outputText value="#{bundle.PageHeader}" />
-                </div>
-            </div>
+           
+            <h:panelGrid columns="2" class="heading" width="100%">
+                    <h:graphicImage library="images" name="life_logo.png" height="78px" />
+                    <h:outputText value="#{bundle.PageHeader}" class="heading-title"/>
+                </h:panelGrid>
+           
         </ui:composition>
     </body>
 </html>

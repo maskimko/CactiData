@@ -7,28 +7,30 @@ and open the template in the editor.
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" 
       xmlns:ui="http://java.sun.com/jsf/facelets"
-      xmlns:h="http://java.sun.com/jsf/html">
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
     <h:head>
         <title><ui:insert name="windowTitle"></ui:insert></title>
-         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-         <h:outputStylesheet name="css/site_color.css"/>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <h:outputStylesheet name="css/site_color.css"/>
     </h:head>
     <h:body>
-       <div id="heading">
-            <ui:insert name="header">
-                <ui:include src="Sections/header.xhtml"/>
-            </ui:insert>
-        </div>
-        <div id="sidebar">
-            <ui:insert name="sidebar">
-                <ui:include src="Sections/sidebar.xhtml"/>
-            </ui:insert>
-        </div>
-        <div id="content">
-            Default Content external
-            <ui:insert name="content">
-                Default content
-            </ui:insert>
-        </div>
+        <p:layout fullPage="true">
+            <p:layoutUnit position="north" size="100" resizable="false" closable="false" collapsible="false">
+                <ui:insert name="header">
+                    <ui:include src="Sections/header.xhtml"/>
+                </ui:insert>
+            </p:layoutUnit>
+            <p:layoutUnit position="west" size="220" header="Left" resizable="true" closable="false" collapsible="true">
+                <ui:insert name="sidebar">
+                    <ui:include src="Sections/sidebar.xhtml"/>
+                </ui:insert>
+            </p:layoutUnit>
+            <p:layoutUnit position="center">
+                <ui:insert name="content">
+                    Default content
+                </ui:insert>
+            </p:layoutUnit>
+        </p:layout>
     </h:body>
 </html>
