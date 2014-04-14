@@ -4,8 +4,10 @@
 
     <groupId>ua.pp.msk.learn.javaee.cacti</groupId>
     <artifactId>CactiData</artifactId>
-    <version>0.02</version>
+    <version>0.03-final</version>
     <packaging>war</packaging>
+    <description>Last separare version of this project
+        before including it to power monitoring enterprise project</description>
 
     <name>CactiData</name>
 
